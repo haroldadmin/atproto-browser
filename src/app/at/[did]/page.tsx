@@ -14,7 +14,7 @@ export default async function DIDPage({
   const didDoc = await resolveDidDoc(did);
 
   return (
-    <section className="max-w-lg">
+    <section>
       {!didDoc && <UnresolvedDID />}
       {didDoc && <DIDDoc doc={didDoc} />}
     </section>

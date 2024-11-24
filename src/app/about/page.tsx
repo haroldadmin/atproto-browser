@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function About() {
   return (
-    <section className="max-w-lg">
+    <section>
       <article className="space-y-4">
         <p>
           ATProto browser is an experimental tool to browse files stored on the
