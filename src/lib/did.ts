@@ -1,4 +1,4 @@
-import { DidResolver, IdResolver, MemoryCache } from "@atproto/identity";
+import { IdResolver, MemoryCache } from "@atproto/identity";
 import { hoursToMilliseconds } from "date-fns/hoursToMilliseconds";
 
 const oneHourMillis = hoursToMilliseconds(1);
@@ -9,16 +9,20 @@ const resolver = new IdResolver({
 });
 
 export async function resolveDidDoc(str: string) {
-  if (isValidDid(str)) {
-    return fetchDidDoc(str, resolver.did);
-  }
+  const resolvedDid = !isValidDid(str)
+    ? await resolver.handle.resolve(str)
+    : str;
 
-  const resolvedDid = await resolver.handle.resolve(str);
   if (!resolvedDid) {
     return undefined;
   }
 
-  return fetchDidDoc(resolvedDid, resolver.did);
+  const doc = await resolver.did.resolve(resolvedDid);
+  if (!doc) {
+    return undefined;
+  }
+
+  return doc;
 }
 
 type DidParts = {
@@ -58,13 +62,4 @@ function isValidDid(str: string): boolean {
   }
 
   return true;
-}
-
-async function fetchDidDoc(did: string, resolver: DidResolver) {
-  const doc = await resolver.resolve(did);
-  if (!doc) {
-    throw new Error("Could not resolve did");
-  }
-
-  return doc;
 }

@@ -13,7 +13,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="p-4 lg:p-16">
+        <header className="mb-4">
+          <h1 className="text-4xl font-bold">ATProto Browser</h1>
+          <p className="text-lg text-gray-500">
+            Experimental browser for the Atmosphere
+          </p>
+        </header>
+        {children}
+      </body>
     </html>
   );
 }
