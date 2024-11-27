@@ -2,7 +2,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function Footer() {
   return (
-    <footer className="absolute bottom-0 w-full">
+    <footer className="w-full py-8">
       <Separator />
       <p className="my-4 text-gray-500 text-sm">
         &copy; {new Date().getFullYear()} Kshitij Chauhan.

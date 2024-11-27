@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="dark p-4 lg:p-16 max-w-lg min-h-screen">
+      <body className="dark p-4 lg:p-16 min-h-screen">
         <header className="mb-4">
           <h1 className="text-4xl font-bold">ATProto Browser</h1>
           <p className="text-lg text-gray-500">

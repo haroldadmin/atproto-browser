@@ -1,5 +1,6 @@
 import { IdResolver, MemoryCache } from "@atproto/identity";
 import { hoursToMilliseconds } from "date-fns/hoursToMilliseconds";
+import { cache } from "react";
 
 const oneHourMillis = hoursToMilliseconds(1);
 const oneDayMillis = hoursToMilliseconds(24);
@@ -24,6 +25,8 @@ export async function resolveDidDoc(str: string) {
 
   return doc;
 }
+
+export const cachedResolveDidDoc = cache(resolveDidDoc);
 
 type DidParts = {
   prefix: string;
