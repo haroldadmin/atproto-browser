@@ -1,5 +1,5 @@
 import LinkSpan from "@/components/link-span";
-import { cachedResolveDidDoc, resolveDidDoc } from "@/lib/did";
+import { cachedResolveDidDoc } from "@/lib/did";
 import { extractPDSUrl, fetchRecords } from "@/lib/records";
 import Link from "next/link";
 import { notFound } from "next/navigation";

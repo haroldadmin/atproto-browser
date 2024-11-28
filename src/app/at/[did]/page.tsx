@@ -1,14 +1,9 @@
 import LinkSpan from "@/components/link-span";
 import { cachedResolveDidDoc } from "@/lib/did";
-import {
-  cachedFetchCollections,
-  extractPDSUrl,
-  fetchCollections,
-} from "@/lib/records";
+import { cachedFetchCollections, extractPDSUrl } from "@/lib/records";
 import { Library } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cache } from "react";
 
 export default async function CollectionsPage({
   params,

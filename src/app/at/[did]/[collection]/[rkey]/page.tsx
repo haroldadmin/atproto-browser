@@ -1,4 +1,3 @@
-import LinkSpan from "@/components/link-span";
 import BlueskyFollowRecord from "@/components/records/bluesky-follow";
 import BlueskyLikeRecord from "@/components/records/bluesky-like";
 import { resolveDidDoc } from "@/lib/did";
@@ -7,9 +6,7 @@ import {
   AppBskyFeedLike,
   AppBskyFeedPost,
   AppBskyGraphFollow,
-  AtUri,
 } from "@atproto/api";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import BlueskyPostRecord from "../../../../../components/records/bluesky-post";
 
@@ -54,16 +51,4 @@ export default async function RecordPage({
   }
 
   return <pre>{JSON.stringify(record, null, 2)}</pre>;
-}
-
-function RecordUri({ uri }: { uri: string }) {
-  const parsedUri = new AtUri(uri);
-
-  return (
-    <Link
-      href={`/at/${parsedUri.host}/${parsedUri.collection}/${parsedUri.rkey}`}
-    >
-      <LinkSpan>{uri}</LinkSpan>
-    </Link>
-  );
 }

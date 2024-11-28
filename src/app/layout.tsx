@@ -1,5 +1,4 @@
 import Navigation from "@/components/navigation";
-import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
 import Footer from "../components/footer";
 import "./globals.css";
