@@ -6,7 +6,7 @@ export default function About() {
     <section className="max-w-xl prose dark:prose-invert">
       <article className="space-y-4">
         <p>
-          ATProto browser is an experimental tool to browse files stored on the
+          ATProto Browser is an experimental tool to browse files stored on the
           decentralised social media protocol{" "}
           <Link
             href="https://atproto.com"
@@ -15,18 +15,7 @@ export default function About() {
           >
             <LinkSpan>ATProto</LinkSpan>
           </Link>
-          , similar to the existing tool{" "}
-          <Link
-            href="https://atproto-browser.vercel.app"
-            target="_blank"
-            referrerPolicy="no-referrer"
-          >
-            <LinkSpan>atproto-browser</LinkSpan>
-          </Link>
-          .
-        </p>
-        <p>
-          This tool is not affiliated with{" "}
+          . This tool is <strong>NOT</strong> affiliated with{" "}
           <Link
             as="a"
             href="https://bluesky.social"
@@ -38,27 +27,18 @@ export default function About() {
           .
         </p>
         <p>
-          It is a side project that I build in my spare time to help me learn
-          more about the protocol, and decentralised social media.
-        </p>
-        <p>
-          If you like this tool, please consider contributing to the project on{" "}
+          If you like this project, please consider{" "}
           <Link
             href="https://github.com/haroldadmin/atproto-browser"
             target="_blank"
             referrerPolicy="no-referrer"
           >
-            <LinkSpan>GitHub</LinkSpan>
+            <LinkSpan>contributing</LinkSpan>
           </Link>
-          , and follow me on Bluesky{" "}
-          <Link
-            href="https://bsky.app/profile/haroldadmin.com"
-            target="_blank"
-            referrerPolicy="no-referrer"
-          >
-            <LinkSpan>@haroldadmin.com</LinkSpan>
-          </Link>
+          .
         </p>
+
+        <p></p>
       </article>
     </section>
   );

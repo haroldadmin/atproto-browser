@@ -39,7 +39,7 @@ function NavigationLink({
       <p
         className={clsx(
           "text-sm text-gray-400 hover:underline",
-          pathname === href && "text-gray-50"
+          pathname === href && "text-gray-50 pointer-events-none"
         )}
       >
         {children}
