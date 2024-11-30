@@ -21,7 +21,6 @@ export default function RootLayout({
           <p className="text-lg text-gray-500">
             Experimental browser for the Atmosphere
           </p>
-          <Navigation />
         </header>
         {children}
         <Footer />
