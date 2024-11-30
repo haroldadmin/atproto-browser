@@ -3,17 +3,13 @@
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Navigation() {
-  const pathname = usePathname();
-
   return (
     <NavigationMenu className="my-4">
       <NavigationMenuList className="flex flex-row gap-4">
