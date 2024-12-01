@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ATProto Browser
+
+<img src="public/atproto-browser.svg" alt="ATProto Browser" width="100" />
+
+ATProto Browser is a Next.js app that allows you to browse files stored on the atmosphere.
+There are several alternatives available, but this one is mine.
+
+[https://atproto-browser.haroldadmin.com](https://atproto-browser.haroldadmin.com)
+
+- The app uses React Server components to fetch data on the server wherever possible. Features that require client side data fetching, such as pagination for records, are implemented with client side data fetching.
+- Consistent and predictable URLs: `/at/:did/:collection/:rkey`
+- Support for various record types, with fallback to stringified JSON for unknown types
+  - We currently support specialised rendering popular record types, such as `app.bsky.feed.post`, `app.bsky.graph.follow`, etc.
+  - You can help by expanding the list of supported record types!
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/haroldadmin/atproto-browser.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Run the development server
 
-## Learn More
+```bash
+yarn dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is open for contributions. Feel free to open an issue or submit a PR.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Disclaimer
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is not affiliated with or endorsed by Bluesky, or the team behind Atproto.
