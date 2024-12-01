@@ -27,7 +27,7 @@ export default async function CollectionPage({
 
   return (
     <RecordsList
-      initialData={records}
+      initialData={records.map((r) => r.uri)}
       did={decodeURIComponent(did)}
       collection={decodeURIComponent(collection)}
       pds={pds}

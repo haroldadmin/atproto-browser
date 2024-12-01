@@ -1,7 +1,6 @@
 "use client";
 
 import { Agent, AtUri } from "@atproto/api";
-import type { Record } from "@atproto/api/dist/client/types/com/atproto/repo/listRecords";
 import { concat } from "lodash";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
@@ -9,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import LinkSpan from "./link-span";
 
-async function* recordsGenerator<T extends Record>(
+async function* recordsGenerator(
   did: string,
   collection: string,
   pds: string,
@@ -28,25 +27,25 @@ async function* recordsGenerator<T extends Record>(
     return;
   }
 
-  yield res.data.records as T[];
+  yield res.data.records.map((r) => r.uri);
 }
 
-type RecordsListProps<T extends Record> = {
-  initialData: T[];
+type RecordsListProps = {
+  initialData: string[];
   cursor?: string;
   did: string;
   collection: string;
   pds: string;
 };
 
-export default function RecordsList<T extends Record>({
+export default function RecordsList({
   initialData,
   cursor,
   did,
   collection,
   pds,
-}: RecordsListProps<T>) {
-  const [records, setRecords] = useState(initialData);
+}: RecordsListProps) {
+  const [recordUris, setRecordUris] = useState(initialData);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -54,7 +53,7 @@ export default function RecordsList<T extends Record>({
     skip: !hasMore || loading,
   });
 
-  const generator = useRef(recordsGenerator<T>(did, collection, pds, cursor));
+  const generator = useRef(recordsGenerator(did, collection, pds, cursor));
 
   useEffect(() => {
     if (!inView || loading || !hasMore) {
@@ -71,7 +70,7 @@ export default function RecordsList<T extends Record>({
           return;
         }
 
-        setRecords(concat(records, next.value));
+        setRecordUris(concat(recordUris, next.value));
       })
       .catch(() => {
         setHasMore(false);
@@ -79,13 +78,13 @@ export default function RecordsList<T extends Record>({
       .finally(() => {
         setLoading(false);
       });
-  }, [inView, loading, records]);
+  }, [inView, loading, recordUris]);
 
   return (
     <div>
       <ul className="space-y-2">
-        {records.map((record) => (
-          <RecordItem key={record.uri} record={record} />
+        {recordUris.map((recordUri) => (
+          <RecordItem key={recordUri} recordUri={recordUri} />
         ))}
         {hasMore && <LoaderCircle ref={ref} className="animate-spin" />}
       </ul>
@@ -96,11 +95,11 @@ export default function RecordsList<T extends Record>({
   );
 }
 
-function RecordItem<T extends Record>({ record }: { record: T }) {
-  const { rkey, host, collection } = new AtUri(record.uri);
+function RecordItem({ recordUri }: { recordUri: string }) {
+  const { rkey, host, collection } = new AtUri(recordUri);
 
   return (
-    <li key={record.cid}>
+    <li>
       <Link href={`/at/${host}/${collection}/${rkey}`}>
         <LinkSpan>{rkey}</LinkSpan>
       </Link>
