@@ -23,9 +23,11 @@ export default function RootLayout({
             <Image src={logo} width={52} height={52} alt="ATProto Browser" />
             <div>
               <Link href="/">
-                <h1 className="text-4xl font-bold">ATProto Browser</h1>
+                <h1 className="text-2xl md:text-4xl font-bold">
+                  ATProto Browser
+                </h1>
               </Link>
-              <p className="text-lg text-gray-500">
+              <p className="md:text-lg text-gray-500">
                 Experimental browser for the Atmosphere
               </p>
             </div>
