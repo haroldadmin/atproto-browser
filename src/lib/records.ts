@@ -22,16 +22,23 @@ type FetchRecordsParams = {
   did: string;
   collection: string;
   pds: string;
+  cursor?: string;
 };
 
-async function fetchRecords({ did, collection, pds }: FetchRecordsParams) {
+async function fetchRecords({
+  did,
+  collection,
+  pds,
+  cursor,
+}: FetchRecordsParams) {
   const agent = new Agent(pds);
   const { data } = await agent.com.atproto.repo.listRecords({
     repo: did,
     collection,
+    cursor,
   });
 
-  return data.records;
+  return data;
 }
 
 export const cachedFetchRecords = cache(fetchRecords);

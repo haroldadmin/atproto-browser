@@ -1064,6 +1064,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4":
+  version: 4.17.13
+  resolution: "@types/lodash@npm:4.17.13"
+  checksum: 10c0/c3d0b7efe7933ac0369b99f2f7bff9240d960680fdb74b41ed4bd1b3ca60cca1e31fe4046d9abbde778f941a41bc2a75eb629abf8659fa6c27b66efbbb0802a9
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^20":
   version: 20.17.6
   resolution: "@types/node@npm:20.17.6"
@@ -1483,6 +1490,7 @@ __metadata:
     "@radix-ui/react-separator": "npm:^1.1.0"
     "@radix-ui/react-slot": "npm:^1.1.0"
     "@tailwindcss/typography": "npm:^0.5.15"
+    "@types/lodash": "npm:^4"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -1491,12 +1499,14 @@ __metadata:
     date-fns: "npm:^4.1.0"
     eslint: "npm:^8"
     eslint-config-next: "npm:15.0.3"
+    lodash: "npm:^4.17.21"
     lucide-react: "npm:^0.460.0"
     next: "npm:15.0.3"
     postcss: "npm:^8"
     react: "npm:19.0.0-rc-66855b96-20241106"
     react-dom: "npm:19.0.0-rc-66855b96-20241106"
     react-hook-form: "npm:^7.53.2"
+    react-intersection-observer: "npm:^9.13.1"
     tailwind-merge: "npm:^2.5.4"
     tailwindcss: "npm:^3.4.1"
     tailwindcss-animate: "npm:^1.0.7"
@@ -3405,6 +3415,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
+  languageName: node
+  linkType: hard
+
 "loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
@@ -4142,6 +4159,19 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
   checksum: 10c0/18336d8e8798a70dcd0af703a0becca2d5dbf82a7b7a3ca334ae0e1f26410490bc3ef2ea51adcf790bb1e7006ed7a763fd00d664e398f71225b23529a7ccf0bf
+  languageName: node
+  linkType: hard
+
+"react-intersection-observer@npm:^9.13.1":
+  version: 9.13.1
+  resolution: "react-intersection-observer@npm:9.13.1"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 10c0/c64722db407e0ca83945bf97621ab4618fa74f3a70b528ff43988818d46feee8962bd12e70203d2d92b31030889a1f813d00e0aa3d781a7bc39fb293c277ee04
   languageName: node
   linkType: hard
 

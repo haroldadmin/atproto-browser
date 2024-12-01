@@ -1,8 +1,6 @@
-import LinkSpan from "@/components/link-span";
+import RecordsList from "@/components/records-list";
 import { cachedResolveDidDoc } from "@/lib/did";
 import { cachedFetchRecords, extractPDSUrl } from "@/lib/records";
-import { AtUri } from "@atproto/syntax";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function CollectionPage({
@@ -21,21 +19,19 @@ export default async function CollectionPage({
     notFound();
   }
 
-  const records = await cachedFetchRecords({ did: doc.id, collection, pds });
+  const { records, cursor } = await cachedFetchRecords({
+    did: doc.id,
+    collection,
+    pds,
+  });
+
   return (
-    <div>
-      <ul className="space-y-2">
-        {records.map((r) => {
-          const uri = new AtUri(r.uri);
-          return (
-            <li key={r.cid}>
-              <Link href={`/at/${did}/${collection}/${uri.rkey}`}>
-                <LinkSpan>{uri.rkey}</LinkSpan>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+    <RecordsList
+      initialData={records}
+      did={decodeURIComponent(did)}
+      collection={decodeURIComponent(collection)}
+      pds={pds}
+      cursor={cursor}
+    />
   );
 }
