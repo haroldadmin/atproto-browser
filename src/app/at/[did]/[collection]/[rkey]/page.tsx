@@ -1,14 +1,16 @@
 import BlueskyFollowRecord from "@/components/records/bluesky-follow";
 import BlueskyLikeRecord from "@/components/records/bluesky-like";
-import { resolveDidDoc } from "@/lib/did";
-import { extractPDSUrl, fetchRecord } from "@/lib/records";
+import BlueskyPostRecord from "@/components/records/bluesky-post";
+import BlueskyProfileRecord from "@/components/records/bluesky-profile";
+import { cachedResolveDidDoc } from "@/lib/did";
+import { cachedFetchRecord, extractPDSUrl } from "@/lib/records";
 import {
+  AppBskyActorProfile,
   AppBskyFeedLike,
   AppBskyFeedPost,
   AppBskyGraphFollow,
 } from "@atproto/api";
 import { notFound } from "next/navigation";
-import BlueskyPostRecord from "../../../../../components/records/bluesky-post";
 
 export default async function RecordPage({
   params,
@@ -17,7 +19,7 @@ export default async function RecordPage({
 }) {
   const { did, collection, rkey } = await params;
 
-  const doc = await resolveDidDoc(decodeURIComponent(did));
+  const doc = await cachedResolveDidDoc(decodeURIComponent(did));
   if (!doc) {
     notFound();
   }
@@ -27,7 +29,7 @@ export default async function RecordPage({
     notFound();
   }
 
-  const record = await fetchRecord({
+  const record = await cachedFetchRecord({
     pds,
     did: doc.id,
     collection: decodeURIComponent(collection),
@@ -38,17 +40,40 @@ export default async function RecordPage({
     notFound();
   }
 
-  if (AppBskyGraphFollow.isRecord(record.value)) {
-    return <BlueskyFollowRecord record={record.value} />;
+  return (
+    <div className="space-y-4">
+      <RecordWrapper value={record.value} pds={pds} did={did} />
+      <pre className="prose dark:prose-invert text-sm overflow-auto">
+        {JSON.stringify(record, null, 2)}
+      </pre>
+    </div>
+  );
+}
+
+function RecordWrapper({
+  value,
+  pds,
+  did,
+}: {
+  value: unknown;
+  pds: string;
+  did: string;
+}) {
+  if (AppBskyGraphFollow.isRecord(value)) {
+    return <BlueskyFollowRecord record={value} pds={pds} />;
   }
 
-  if (AppBskyFeedLike.isRecord(record.value)) {
-    return <BlueskyLikeRecord record={record.value} />;
+  if (AppBskyFeedLike.isRecord(value)) {
+    return <BlueskyLikeRecord record={value} />;
   }
 
-  if (AppBskyFeedPost.isRecord(record.value)) {
-    return <BlueskyPostRecord record={record.value} />;
+  if (AppBskyFeedPost.isRecord(value)) {
+    return <BlueskyPostRecord record={value} />;
   }
 
-  return <pre>{JSON.stringify(record, null, 2)}</pre>;
+  if (AppBskyActorProfile.isRecord(value)) {
+    return <BlueskyProfileRecord record={value} did={did} />;
+  }
+
+  return null;
 }

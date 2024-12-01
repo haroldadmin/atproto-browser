@@ -1,13 +1,13 @@
-import { Agent } from "@atproto/api";
+import { Agent, AppBskyActorProfile } from "@atproto/api";
 import { DidDocument } from "@atproto/identity";
 import { cache } from "react";
 
-export type FetchCollectionsParams = {
+type FetchCollectionsParams = {
   did: string;
   pds: string;
 };
 
-export async function fetchCollections({ did, pds }: FetchCollectionsParams) {
+async function fetchCollections({ did, pds }: FetchCollectionsParams) {
   const agent = new Agent(pds);
   const { data } = await agent.com.atproto.repo.describeRepo({
     repo: did,
@@ -18,17 +18,13 @@ export async function fetchCollections({ did, pds }: FetchCollectionsParams) {
 
 export const cachedFetchCollections = cache(fetchCollections);
 
-export type FetchRecordsParams = {
+type FetchRecordsParams = {
   did: string;
   collection: string;
   pds: string;
 };
 
-export async function fetchRecords({
-  did,
-  collection,
-  pds,
-}: FetchRecordsParams) {
+async function fetchRecords({ did, collection, pds }: FetchRecordsParams) {
   const agent = new Agent(pds);
   const { data } = await agent.com.atproto.repo.listRecords({
     repo: did,
@@ -38,19 +34,16 @@ export async function fetchRecords({
   return data.records;
 }
 
-export type FetchRecordParams = {
+export const cachedFetchRecords = cache(fetchRecords);
+
+type FetchRecordParams = {
   did: string;
   collection: string;
   rkey: string;
   pds: string;
 };
 
-export async function fetchRecord({
-  did,
-  collection,
-  rkey,
-  pds,
-}: FetchRecordParams) {
+async function fetchRecord({ did, collection, rkey, pds }: FetchRecordParams) {
   const agent = new Agent(pds);
   const { data } = await agent.com.atproto.repo.getRecord({
     repo: did,
@@ -69,3 +62,16 @@ export function extractPDSUrl(didDoc: DidDocument): string | undefined {
   );
   return pdsService?.serviceEndpoint as string;
 }
+
+async function fetchProfile(did: string, pds: string) {
+  const agent = new Agent(pds);
+  const { data } = await agent.com.atproto.repo.getRecord({
+    repo: did,
+    collection: "app.bsky.actor.profile",
+    rkey: "self",
+  });
+
+  return data.value as AppBskyActorProfile.Record;
+}
+
+export const cachedFetchProfile = cache(fetchProfile);

@@ -1,9 +1,9 @@
 import LinkSpan from "@/components/link-span";
 import { cachedResolveDidDoc } from "@/lib/did";
-import { extractPDSUrl, fetchRecords } from "@/lib/records";
+import { cachedFetchRecords, extractPDSUrl } from "@/lib/records";
+import { AtUri } from "@atproto/syntax";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AtUri } from "@atproto/syntax";
 
 export default async function CollectionPage({
   params,
@@ -21,7 +21,7 @@ export default async function CollectionPage({
     notFound();
   }
 
-  const records = await fetchRecords({ did: doc.id, collection, pds });
+  const records = await cachedFetchRecords({ did: doc.id, collection, pds });
   return (
     <div>
       <ul className="space-y-2">

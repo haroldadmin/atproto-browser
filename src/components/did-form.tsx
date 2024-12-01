@@ -1,10 +1,10 @@
 "use client";
 
-import { clsx } from "clsx";
+import { fetchDidDoc } from "@/actions/resolveDid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { clsx } from "clsx";
 import { useActionState } from "react";
-import { fetchDidDoc } from "../actions/resolveDid";
 import { useFormStatus } from "react-dom";
 
 export default function DIDForm() {
