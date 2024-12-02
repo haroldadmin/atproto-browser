@@ -8,12 +8,16 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import LinkSpan from "./link-span";
 
-async function* recordsGenerator(
+async function* generateRecords(
   did: string,
   collection: string,
   pds: string,
   cursor?: string
 ) {
+  if (!cursor) {
+    return;
+  }
+
   const agent = new Agent(pds);
 
   const res = await agent.com.atproto.repo.listRecords({
@@ -53,7 +57,7 @@ export default function RecordsList({
     skip: !hasMore || loading,
   });
 
-  const generator = useRef(recordsGenerator(did, collection, pds, cursor));
+  const generator = useRef(generateRecords(did, collection, pds, cursor));
 
   useEffect(() => {
     if (!inView || loading || !hasMore) {
