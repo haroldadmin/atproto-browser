@@ -78,7 +78,7 @@ export default function RecordsList({
       .finally(() => {
         setLoading(false);
       });
-  }, [inView, loading, recordUris]);
+  }, [inView, loading, recordUris, hasMore]);
 
   return (
     <div>
