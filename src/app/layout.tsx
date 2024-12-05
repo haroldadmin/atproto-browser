@@ -20,14 +20,16 @@ export default function RootLayout({
       <body className="dark px-4 py-8 lg:p-16 min-h-screen flex flex-col">
         <header>
           <div className="flex items-center gap-4">
-            <Image src={logo} width={52} height={52} alt="ATProto Browser" />
+            <Link href="/">
+              <Image src={logo} width={52} height={52} alt="ATProto Browser" />
+            </Link>
             <div>
               <Link href="/">
                 <h1 className="text-2xl md:text-4xl font-bold">
                   ATProto Browser
                 </h1>
               </Link>
-              <p className="md:text-lg text-gray-500">
+              <p className="md:text-lg text-gray-300">
                 Experimental browser for the Atmosphere
               </p>
             </div>
