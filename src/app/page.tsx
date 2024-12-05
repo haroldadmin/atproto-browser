@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <section>
       <DIDForm />
-      <LiveFeed sampleRate={0.01} displayedPosts={5} />
+      <LiveFeed sampleRate={0.05} displayedPosts={5} />
     </section>
   );
 }

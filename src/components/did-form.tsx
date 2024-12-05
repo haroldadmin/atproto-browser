@@ -13,7 +13,7 @@ export default function DIDForm() {
   });
 
   return (
-    <form action={formAction} className="flex flex-row gap-2 max-w-lg py-12">
+    <form action={formAction} className="flex flex-row gap-2 max-w-lg py-24">
       <div className="flex flex-col gap-1 w-full">
         <Input
           className={clsx(formState.error && "border-red-500")}
