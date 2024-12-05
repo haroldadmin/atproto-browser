@@ -1,15 +1,18 @@
-import { AppBskyFeedPost } from "@atproto/api";
-import { Separator } from "../ui/separator";
+import Link from "next/link";
+import LinkSpan from "../link-span";
+import { JetstreamPost } from "./useJetstream";
 
 type FeedItemProps = {
-  post: AppBskyFeedPost.Record;
+  post: JetstreamPost;
 };
 
 export default function FeedItem({ post }: FeedItemProps) {
   return (
-    <div className="space-y-2">
-      <PostText text={post.text} />
-      <Separator />
+    <div className="space-y-0">
+      <PostText text={post.record.text} />
+      <Link href={`/at/${post.did}/${post.collection}/${post.rkey}`}>
+        <LinkSpan className="text-xs">See post</LinkSpan>
+      </Link>
     </div>
   );
 }

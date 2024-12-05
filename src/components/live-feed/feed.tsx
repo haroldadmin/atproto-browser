@@ -45,9 +45,9 @@ export default function LiveFeed({
         </div>
       </div>
       <ul className="flex flex-col gap-4 py-4">
-        {posts.map(({ record, rkey }) => (
-          <li key={rkey}>
-            <FeedItem post={record} />
+        {posts.map((post) => (
+          <li key={post.rkey}>
+            <FeedItem post={post} />
           </li>
         ))}
       </ul>

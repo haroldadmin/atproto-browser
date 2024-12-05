@@ -24,9 +24,12 @@ function getJetstreamUrl() {
   return jetstreamUrl;
 }
 
-type JetstreamPost = {
+export type JetstreamPost = {
   record: AppBskyFeedPost.Record;
   rkey: string;
+  cid: string;
+  did: string;
+  collection: string;
 };
 
 export function useJetstream(sampleRate: number, bufferSize: number) {
@@ -67,9 +70,7 @@ export function useJetstream(sampleRate: number, bufferSize: number) {
   return { posts, paused, togglePause };
 }
 
-function extractPost(
-  message: MessageEvent
-): { record: AppBskyFeedPost.Record; rkey: string } | undefined {
+function extractPost(message: MessageEvent): JetstreamPost | undefined {
   if (!message.data) {
     return undefined;
   }
@@ -88,5 +89,11 @@ function extractPost(
     return undefined;
   }
 
-  return { record, rkey: data.commit.rkey as string };
+  return {
+    record,
+    rkey: data.commit.rkey,
+    did: data.did,
+    cid: data.commit.cid,
+    collection: data.commit.collection,
+  };
 }
