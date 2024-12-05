@@ -29,8 +29,14 @@ export function FeedItemSkeleton() {
 
 function PostText({ text }: { text: string }) {
   if (!text) {
-    return <p className="text-sm text-gray-400">&lt;&lt; No text &gt;&gt;</p>;
+    return (
+      <p className="text-sm text-gray-700 dark:text-gray-400">
+        &lt;&lt; No text &gt;&gt;
+      </p>
+    );
   }
 
-  return <p className="line-clamp-1 text-gray-300">{text}</p>;
+  return (
+    <p className="line-clamp-1 text-gray-800 dark:text-gray-300">{text}</p>
+  );
 }

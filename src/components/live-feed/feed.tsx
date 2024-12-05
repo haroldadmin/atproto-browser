@@ -98,9 +98,11 @@ function FeedStatus({ paused, sampleRate }: FeedStatusProps) {
   return (
     <div className="mt-4">
       {paused ? (
-        <p className="text-sm text-gray-400 italic">Paused</p>
+        <p className="text-sm text-gray-700 dark:text-gray-400 italic">
+          Paused
+        </p>
       ) : (
-        <p className="text-sm text-gray-400 italic">
+        <p className="text-sm text-gray-700 dark:text-gray-400 italic">
           Sampling at {Math.round(sampleRate * 100)}%
         </p>
       )}
