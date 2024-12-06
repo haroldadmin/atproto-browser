@@ -11,7 +11,7 @@ type FeedSettings = {
 };
 
 const defaultSettings: FeedSettings = {
-  samplingRate: 0.05,
+  samplingRate: 0.02,
   bufferSize: 5,
   collections: ["app.bsky.feed.post"],
   active: true,
