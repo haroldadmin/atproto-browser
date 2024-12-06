@@ -36,7 +36,7 @@ export default function FeedSettings() {
         <SheetHeader>
           <SheetTitle>Feed settings</SheetTitle>
           <SheetDescription className="prose dark:prose-invert">
-            <p>Adjust settings for the live feed</p>
+            Adjust settings for the live feed
           </SheetDescription>
         </SheetHeader>
         <div className="space-y-8 my-8">
