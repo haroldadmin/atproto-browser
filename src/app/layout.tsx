@@ -17,8 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="dark px-4 py-8 lg:p-16 min-h-screen flex flex-col">
-        <header>
+      <body className="dark min-h-screen flex flex-col">
+        <header className="px-4 py-8 lg:px-16">
           <div className="flex items-center gap-4">
             <Link href="/">
               <Image src={logo} width={52} height={52} alt="ATProto Browser" />
@@ -35,8 +35,8 @@ export default function RootLayout({
             </div>
           </div>
         </header>
-        <div className="py-8 flex-grow">{children}</div>
-        <Footer />
+        <div className="px-4 lg:px-16 flex-grow">{children}</div>
+        <Footer className="px-4 lg:px-16" />
       </body>
     </html>
   );

@@ -5,19 +5,14 @@ import { concat } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import { useDocumentVisibility } from "./useDocumentVisibility";
 
-const hosts = [
+export const hosts = [
   "jetstream1.us-east.bsky.network", // US-East
   "jetstream2.us-east.bsky.network", // US-East
   "jetstream1.us-west.bsky.network", // US-West
   "jetstream2.us-west.bsky.network", // US-West
 ] as const;
 
-function getRandomHost() {
-  return hosts[Math.floor(Math.random() * hosts.length)];
-}
-
-function getJetstreamUrl() {
-  const host = getRandomHost();
+function getJetstreamUrl(host: (typeof hosts)[number]) {
   const jetstreamUrl = new URL("subscribe", `wss://${host}`);
   jetstreamUrl.searchParams.append("wantedCollections", "app.bsky.feed.post");
 
@@ -32,15 +27,14 @@ export type JetstreamPost = {
   collection: string;
 };
 
-export function useJetstream(sampleRate: number, bufferSize: number) {
-  const [paused, setPaused] = useState(false);
-  const [posts, setPosts] = useState<JetstreamPost[]>([]);
-
+export function useJetstream(
+  sampleRate: number,
+  bufferSize: number,
+  active: boolean,
+  host: (typeof hosts)[number]
+) {
   const isVisible = useDocumentVisibility();
-
-  const togglePause = useCallback(() => {
-    setPaused((paused) => !paused);
-  }, []);
+  const [posts, setPosts] = useState<JetstreamPost[]>([]);
 
   const onNewPost = useCallback(
     (post: JetstreamPost | undefined) => {
@@ -52,12 +46,12 @@ export function useJetstream(sampleRate: number, bufferSize: number) {
   );
 
   useEffect(() => {
-    if (!isVisible || paused) {
+    if (!active || !isVisible) {
       return;
     }
 
     const controller = new AbortController();
-    const ws = new WebSocket(getJetstreamUrl());
+    const ws = new WebSocket(getJetstreamUrl(host));
 
     streamMessages(ws)
       .pipeThrough(sampled(sampleRate))
@@ -65,9 +59,9 @@ export function useJetstream(sampleRate: number, bufferSize: number) {
       .pipeTo(collector(onNewPost), { signal: controller.signal });
 
     return () => controller.abort();
-  }, [isVisible, sampleRate, paused, onNewPost]);
+  }, [active, isVisible, sampleRate, onNewPost, host]);
 
-  return { posts, paused, togglePause };
+  return { posts };
 }
 
 function extractPost(message: MessageEvent): JetstreamPost | undefined {

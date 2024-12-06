@@ -2,119 +2,75 @@
 
 import { Separator } from "@/components/ui/separator";
 import clsx from "clsx";
-import { Info, Radio } from "lucide-react";
-import Link from "next/link";
-import LinkSpan from "../link-span";
-import {
-  Popover,
-  PopoverAnchor,
-  PopoverContent,
-  PopoverTrigger,
-} from "../ui/popover";
+import { Radio } from "lucide-react";
+import { useContext } from "react";
+import FeedProvider, { FeedContext } from "./feed-context";
 import { FeedItem, FeedItemSkeleton } from "./feed-item";
-import { JetstreamPost, useJetstream } from "./useJetstream";
+import FeedSettings from "./feed-settings";
+import { useJetstream } from "./useJetstream";
 
-type LiveFeedProps = {
-  sampleRate: number;
-  displayedPosts: number;
-};
-
-export default function LiveFeed({
-  sampleRate,
-  displayedPosts,
-}: LiveFeedProps) {
-  const { posts, paused, togglePause } = useJetstream(
-    sampleRate,
-    displayedPosts
-  );
-
+export default function LiveFeed() {
   return (
-    <div className="max-w-lg">
-      <FeedHeader paused={paused} togglePause={togglePause} />
-      <FeedStatus paused={paused} sampleRate={sampleRate} />
-      <Separator className="my-4" />
-      <FeedPosts posts={posts} />
-    </div>
+    <FeedProvider>
+      <div className="max-w-lg">
+        <FeedHeader />
+        <FeedStatus />
+        <Separator className="my-4" />
+        <FeedPosts />
+      </div>
+    </FeedProvider>
   );
 }
 
-type FeedHeaderProps = {
-  paused: boolean;
-  togglePause: () => void;
-};
+function FeedHeader() {
+  const { settings, setActive } = useContext(FeedContext);
 
-function FeedHeader({ paused, togglePause }: FeedHeaderProps) {
   return (
     <div className="flex flex-row gap-2 items-center">
-      <button onClick={togglePause}>
+      <button onClick={() => setActive(!settings.active)}>
         <Radio
-          aria-label={paused ? "Resume" : "Pause"}
+          aria-label={settings.active ? "Pause" : "Resume"}
           className={clsx(
-            paused && "text-gray-300",
-            !paused && "animate-pulse text-blue-500"
+            !settings.active && "text-gray-300",
+            settings.active && "animate-pulse text-blue-500"
           )}
         />
       </button>
-      <Popover>
-        <PopoverTrigger>
-          <div className="flex flex-row gap-2 items-center">
-            <h2 className="text-lg font-bold">Firehose</h2>
-            <PopoverAnchor>
-              <Info className="h-4 w-4" />
-            </PopoverAnchor>
-          </div>
-        </PopoverTrigger>
-        <PopoverContent className="mx-12 my-4">
-          <div className="prose dark:prose-invert">
-            <h4>What is this?</h4>
-            <p className="text-sm">
-              The firehose is a live stream of posts from the Bluesky network,
-              built on top of{" "}
-              <Link
-                href="https://github.com/bluesky-social/jetstream"
-                target="_blank"
-              >
-                <LinkSpan>Jetstream</LinkSpan>
-              </Link>
-              .
-            </p>
-            <p className="text-sm">
-              Jetstream produces hundreds of commits every second. We sample the
-              stream of updates to keep things manageable.
-            </p>
-          </div>
-        </PopoverContent>
-      </Popover>
+      <FeedSettings />
+      <div className="flex flex-row gap-2 items-center">
+        <h2 className="text-lg font-bold">Live feed</h2>
+      </div>
     </div>
   );
 }
 
-type FeedStatusProps = {
-  paused: boolean;
-  sampleRate: number;
-};
-
-function FeedStatus({ paused, sampleRate }: FeedStatusProps) {
+function FeedStatus() {
+  const { settings } = useContext(FeedContext);
   return (
     <div className="mt-4">
-      {paused ? (
+      {settings.active ? (
         <p className="text-sm text-gray-700 dark:text-gray-400 italic">
-          Paused
+          Sampling at {Math.floor(settings.samplingRate * 100)}%
         </p>
       ) : (
         <p className="text-sm text-gray-700 dark:text-gray-400 italic">
-          Sampling at {Math.round(sampleRate * 100)}%
+          Paused
         </p>
       )}
     </div>
   );
 }
 
-type FeedPostsProps = {
-  posts: JetstreamPost[];
-};
+function FeedPosts() {
+  const { settings } = useContext(FeedContext);
 
-function FeedPosts({ posts }: FeedPostsProps) {
+  const { posts } = useJetstream(
+    settings.samplingRate,
+    settings.bufferSize,
+    settings.active,
+    settings.host
+  );
+
   if (!posts.length) {
     return <FeedItemSkeleton />;
   }
