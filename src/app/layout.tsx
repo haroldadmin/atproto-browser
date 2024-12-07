@@ -4,11 +4,30 @@ import Link from "next/link";
 import "./globals.css";
 import Image from "next/image";
 import logo from "../../public/atproto-browser.svg";
+import ogCard from "../../public/og-card.png";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "ATProto Browser",
   description: "Experimental browser for the Atmosphere",
+  openGraph: {
+    type: "website",
+    title: "ATProto Browser",
+    description: "Experimental browser for the Atmosphere",
+    siteName: "ATProto Browser",
+    images: [ogCard.src],
+    url: "https://www.atproto-browser.dev",
+  },
+  twitter: {
+    title: "ATProto Browser",
+    description: "Experimental browser for the Atmosphere",
+    site: "https://www.atproto-browser.dev",
+    images: [ogCard.src],
+    card: "summary_large_image",
+  },
+  alternates: {
+    canonical: "https://www.atproto-browser.dev",
+  },
 };
 
 export default function RootLayout({
