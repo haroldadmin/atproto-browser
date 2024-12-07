@@ -32,7 +32,7 @@ export default function FeedSettings() {
       <SheetTrigger>
         <Settings />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="overflow-y-scroll">
         <SheetHeader>
           <SheetTitle>Feed settings</SheetTitle>
           <SheetDescription className="prose dark:prose-invert">
