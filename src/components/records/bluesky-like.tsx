@@ -14,7 +14,7 @@ export default function BlueskyLikeRecord({
 }) {
   const subjectUri = new AtUri(record.subject.uri);
   return (
-    <div>
+    <div className="space-y-4">
       Liked{" "}
       <Link
         href={`/at/${subjectUri.host}/${subjectUri.collection}/${subjectUri.rkey}`}
@@ -47,5 +47,5 @@ function EmbeddedPost({ uri, pds }: EmbeddedPostProps) {
     return null;
   }
 
-  return <BlueskyPostRecord record={post.value} />;
+  return <BlueskyPostRecord record={post.value} showReplies={false} />;
 }

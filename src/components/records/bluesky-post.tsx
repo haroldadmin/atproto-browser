@@ -21,8 +21,10 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
 export default function BlueskyPostRecord({
   record,
   depth = 0,
+  showReplies = true,
 }: {
   record: AppBskyFeedPost.Record;
+  showReplies?: boolean;
   depth?: number;
 }) {
   return (
@@ -36,7 +38,9 @@ export default function BlueskyPostRecord({
           {dateFormatter.format(new Date(record.createdAt))}
         </p>
       </div>
-      {record.reply?.parent && <ReplyParent record={record} depth={depth} />}
+      {showReplies && record.reply?.parent && (
+        <ReplyParent record={record} depth={depth} />
+      )}
     </div>
   );
 }
