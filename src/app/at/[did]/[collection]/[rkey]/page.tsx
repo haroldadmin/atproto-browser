@@ -2,6 +2,7 @@ import BlueskyFollowRecord from "@/components/records/bluesky-follow";
 import BlueskyLikeRecord from "@/components/records/bluesky-like";
 import BlueskyPostRecord from "@/components/records/bluesky-post";
 import BlueskyProfileRecord from "@/components/records/bluesky-profile";
+import { Separator } from "@/components/ui/separator";
 import { cachedResolveDidDoc } from "@/lib/did";
 import { cachedFetchRecord, extractPDSUrl } from "@/lib/records";
 import {
@@ -41,11 +42,13 @@ export default async function RecordPage({
   }
 
   return (
-    <div className="space-y-4">
+    <div>
       <RecordWrapper value={record.value} pds={pds} did={did} />
-      <pre className="prose dark:prose-invert text-sm overflow-auto">
-        {JSON.stringify(record, null, 2)}
-      </pre>
+      <Separator className="my-4" />
+      <div className="prose dark:prose-invert w-full mt-2">
+        <h2>Record data</h2>
+        <pre>{JSON.stringify(record, null, 2)}</pre>
+      </div>
     </div>
   );
 }
