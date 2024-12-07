@@ -1,17 +1,21 @@
 # ATProto Browser
 
-<img src="public/atproto-browser.svg" alt="ATProto Browser" width="100" />
+<img src="public/og-card.png" alt="ATProto Browser" width="600" />
 
-ATProto Browser is a Next.js app that allows you to browse files stored on the atmosphere.
-There are several alternatives available, but this one is mine.
+[https://www.atproto-browser.dev](https://www.atproto-browser.dev)
 
-[https://atproto-browser.haroldadmin.com](https://atproto-browser.haroldadmin.com)
+ATProto Browser lets you browse files stored on the [ATProto](https://atproto.com) network.
 
-- The app uses React Server components to fetch data on the server wherever possible. Features that require client side data fetching, such as pagination for records, are implemented with client side data fetching.
-- Consistent and predictable URLs: `/at/:did/:collection/:rkey`
-- Support for various record types, with fallback to stringified JSON for unknown types
-  - We currently support specialised rendering popular record types, such as `app.bsky.feed.post`, `app.bsky.graph.follow`, etc.
-  - You can help by expanding the list of supported record types!
+Features:
+
+- Browse files on any PDS using the owner's DID or Bluesky handle.
+- A live feed of posts made on the Bluesky network with configurable sampling and buffer size.
+- Consistent, predictable URLs that make it easy to share links.
+- Rich previews for popular record types alongside raw JSON data.
+
+ATProto Browser is a Next.js app built with React Server components. Server rendered wherever possible, with fallback to client side rendering for dynamic content.
+
+Follow [@atproto-browser.dev](https://bsky.app/profile/atproto-browser.dev) on Bluesky for development updates!
 
 ## Getting Started
 
@@ -35,8 +39,8 @@ yarn dev
 
 ## Contributing
 
-This project is open for contributions. Feel free to open an issue or submit a PR.
+This project is open for contributions. Feel free to open an issue or submit a PR if there's something you'd like to see!
 
 ## Disclaimer
 
-This project is not affiliated with or endorsed by Bluesky, or the team behind Atproto.
+This project is not affiliated with, or endorsed by Bluesky. I'm not a member of the Bluesky team, and this project is not an official product.

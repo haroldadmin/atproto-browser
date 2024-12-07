@@ -26,6 +26,11 @@ export default function Navigation() {
           </NavigationLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
+          <NavigationLink href="https://bsky.app/profile/atproto-browser.dev">
+            Follow
+          </NavigationLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
           <NavigationLink href="https://bsky.app/profile/haroldadmin.com">
             Author
           </NavigationLink>
