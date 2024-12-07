@@ -2,6 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import clsx from "clsx";
+import { range } from "lodash";
 import { Radio } from "lucide-react";
 import { useContext } from "react";
 import FeedProvider, { FeedContext } from "./feed-context";
@@ -71,9 +72,7 @@ function FeedPosts() {
     settings.host
   );
 
-  if (!posts.length) {
-    return <FeedItemSkeleton />;
-  }
+  const showSkeletons = settings.active && posts.length < settings.bufferSize;
 
   return (
     <ul className="flex flex-col gap-4">
@@ -82,6 +81,12 @@ function FeedPosts() {
           <FeedItem post={post} />
         </li>
       ))}
+      {showSkeletons &&
+        range(settings.bufferSize - posts.length).map((index) => (
+          <li key={index}>
+            <FeedItemSkeleton />
+          </li>
+        ))}
     </ul>
   );
 }
