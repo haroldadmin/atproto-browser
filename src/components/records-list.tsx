@@ -1,5 +1,6 @@
 "use client";
 
+import { atUriToBrowserUri } from "@/lib/uris";
 import { Agent, AtUri } from "@atproto/api";
 import { concat } from "lodash";
 import { LoaderCircle } from "lucide-react";
@@ -100,12 +101,13 @@ export default function RecordsList({
 }
 
 function RecordItem({ recordUri }: { recordUri: string }) {
-  const { rkey, host, collection } = new AtUri(recordUri);
+  const atUri = new AtUri(recordUri);
+  const browserUri = atUriToBrowserUri(atUri);
 
   return (
     <li>
-      <Link href={`/at/${host}/${collection}/${rkey}`}>
-        <LinkSpan>{rkey}</LinkSpan>
+      <Link href={browserUri}>
+        <LinkSpan>{atUri.rkey}</LinkSpan>
       </Link>
     </li>
   );
