@@ -6,6 +6,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cachedResolveDidDoc } from "@/lib/did";
 import { cachedFetchRecord, extractPDSUrl } from "@/lib/records";
+import { atUriToBrowserUri } from "@/lib/uris";
 import { AppBskyFeedPost, AtUri } from "@atproto/api";
 import { AccordionItem } from "@radix-ui/react-accordion";
 import { Info, Reply } from "lucide-react";
@@ -53,7 +54,8 @@ function ReplyParent({
   depth: number;
 }) {
   if (depth > 4 && record.reply?.parent) {
-    const { host, collection, rkey } = new AtUri(record.reply.parent.uri);
+    const atUri = new AtUri(record.reply.parent.uri);
+    const browserUri = atUriToBrowserUri(atUri);
 
     return (
       <Alert className="my-4">
@@ -65,7 +67,7 @@ function ReplyParent({
         </AlertTitle>
         <AlertDescription className="ml-5">
           Visit the{" "}
-          <Link href={`/at/${host}/${collection}/${rkey}`}>
+          <Link href={browserUri}>
             <LinkSpan>parent</LinkSpan>
           </Link>{" "}
           of this post to view more replies.
@@ -78,12 +80,12 @@ function ReplyParent({
     return null;
   }
 
-  const { host, collection, rkey } = new AtUri(record.reply.parent.uri);
-  if (collection !== "app.bsky.feed.post") {
+  const atUri = new AtUri(record.reply.parent.uri);
+  if (atUri.collection !== "app.bsky.feed.post") {
     return null;
   }
 
-  const didDoc = use(cachedResolveDidDoc(host));
+  const didDoc = use(cachedResolveDidDoc(atUri.host));
   if (!didDoc) {
     return null;
   }
@@ -95,9 +97,9 @@ function ReplyParent({
 
   const post = use(
     cachedFetchRecord({
-      did: host,
-      collection,
-      rkey,
+      did: atUri.host,
+      collection: atUri.collection,
+      rkey: atUri.rkey,
       pds: pdsUrl,
     })
   );
@@ -113,8 +115,8 @@ function ReplyParent({
           <p className="flex flex-row items-center gap-1 text-muted-foreground">
             <Reply className="h-3 w-3" />
             <span>In reply to </span>
-            <Link href={`/at/${host}/${collection}/${rkey}`}>
-              <LinkSpan>{rkey}</LinkSpan>
+            <Link href={atUriToBrowserUri(atUri)}>
+              <LinkSpan>{atUri.rkey}</LinkSpan>
             </Link>
           </p>
         </AccordionTrigger>

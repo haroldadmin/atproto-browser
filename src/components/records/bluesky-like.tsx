@@ -1,8 +1,9 @@
+import { atUriToBrowserUri } from "@/lib/uris";
 import { AppBskyFeedLike, AppBskyFeedPost, AtUri } from "@atproto/api";
 import Link from "next/link";
-import LinkSpan from "../link-span";
-import { cachedFetchRecord } from "../../lib/records";
 import { Suspense, use } from "react";
+import { cachedFetchRecord } from "../../lib/records";
+import LinkSpan from "../link-span";
 import BlueskyPostRecord from "./bluesky-post";
 
 export default function BlueskyLikeRecord({
@@ -13,12 +14,12 @@ export default function BlueskyLikeRecord({
   pds: string;
 }) {
   const subjectUri = new AtUri(record.subject.uri);
+  const browserUri = atUriToBrowserUri(subjectUri);
+
   return (
     <div className="space-y-4">
       Liked{" "}
-      <Link
-        href={`/at/${subjectUri.host}/${subjectUri.collection}/${subjectUri.rkey}`}
-      >
+      <Link href={browserUri}>
         <LinkSpan>{subjectUri.rkey}</LinkSpan>
       </Link>
       <Suspense fallback={<p>Loading post...</p>}>
