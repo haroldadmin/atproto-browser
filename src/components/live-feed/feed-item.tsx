@@ -23,6 +23,7 @@ export function FeedItemSkeleton() {
     <div className="space-y-1">
       <Skeleton className="w-full h-4" />
       <Skeleton className="w-1/2 h-4" />
+      <Skeleton className="w-8 h-2" />
     </div>
   );
 }
