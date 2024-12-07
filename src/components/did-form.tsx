@@ -25,7 +25,7 @@ export default function DIDForm() {
             type="text"
             name="did"
             defaultValue={formState.did}
-            placeholder="did:plc, did:web, or handle.bsky.social"
+            placeholder="did:plc, did:web, or Bluesky handle"
           />
           <SubmitButton />
         </div>

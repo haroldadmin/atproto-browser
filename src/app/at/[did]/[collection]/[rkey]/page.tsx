@@ -64,7 +64,7 @@ function RecordWrapper({
   }
 
   if (AppBskyFeedLike.isRecord(value)) {
-    return <BlueskyLikeRecord record={value} />;
+    return <BlueskyLikeRecord record={value} pds={pds} />;
   }
 
   if (AppBskyFeedPost.isRecord(value)) {
