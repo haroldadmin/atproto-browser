@@ -1,8 +1,8 @@
-import LinkSpan from "@/components/link-span";
+import CollectionsList from "@/components/collections-list";
+import DIDDocument from "@/components/did-document";
+import { Separator } from "@/components/ui/separator";
 import { cachedResolveDidDoc } from "@/lib/did";
-import { cachedFetchCollections, extractPDSUrl } from "@/lib/records";
-import { Library } from "lucide-react";
-import Link from "next/link";
+import { extractPDSUrl } from "@/lib/records";
 import { notFound } from "next/navigation";
 
 export default async function CollectionsPage({
@@ -21,23 +21,19 @@ export default async function CollectionsPage({
     notFound();
   }
 
-  const collections = await cachedFetchCollections({
-    did: doc.id,
-    pds: pdsUrl,
-  });
-
   return (
     <div>
-      <ul className="flex flex-col gap-2">
-        {collections.map((collection) => (
-          <li className="flex flex-row items-center gap-2" key={collection}>
-            <Library />
-            <Link href={`/at/${did}/${collection}`}>
-              <LinkSpan>{collection}</LinkSpan>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 my-4">
+        <CollectionsList did={doc.id} pds={pdsUrl} />
+        <div className="col-span-1 lg:col-span-2">
+          <DIDDocument didDocument={doc} />
+        </div>
+      </div>
+      <Separator className="my-4" />
+      <div className="prose dark:prose-invert w-full">
+        <h2>Record data</h2>
+        <pre>{JSON.stringify(doc, null, 2)}</pre>
+      </div>
     </div>
   );
 }
