@@ -37,8 +37,6 @@ export default function About() {
           </Link>
           .
         </p>
-
-        <p></p>
       </article>
     </section>
   );
