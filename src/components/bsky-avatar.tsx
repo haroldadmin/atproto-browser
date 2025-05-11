@@ -31,6 +31,7 @@ export function BskyAvatar({
       height={100}
       src={url.toString()}
       alt="User avatar"
+      unoptimized
     />
   );
 }
