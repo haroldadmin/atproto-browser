@@ -1,11 +1,12 @@
 import Footer from "@/components/footer";
+import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
-import Link from "next/link";
-import "./globals.css";
 import Image from "next/image";
+import Link from "next/link";
+import Script from "next/script";
 import logo from "../../public/atproto-browser.svg";
 import ogCard from "../../public/og-card.png";
-import { ThemeProvider } from "@/components/theme-provider";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ATProto Browser",
@@ -37,6 +38,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="943ae901-ec6c-4bb2-b39c-383b80b3d8ab"
+          data-domains="www.atproto-browser.dev"
+          data-do-not-track="true"
+        />
+      </head>
       <body className="min-h-screen flex flex-col">
         <ThemeProvider
           attribute="class"
