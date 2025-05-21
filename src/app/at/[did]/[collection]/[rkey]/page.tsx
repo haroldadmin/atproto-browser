@@ -1,3 +1,4 @@
+import RawRecord from "@/components/raw-record";
 import BlueskyFollowRecord from "@/components/records/bluesky-follow";
 import BlueskyLikeRecord from "@/components/records/bluesky-like";
 import BlueskyPostRecord from "@/components/records/bluesky-post";
@@ -45,10 +46,7 @@ export default async function RecordPage({
     <div>
       <RecordWrapper value={record.value} pds={pds} did={did} />
       <Separator className="my-4" />
-      <div className="prose dark:prose-invert w-full mt-2">
-        <h2>Record data</h2>
-        <pre>{JSON.stringify(record, null, 2)}</pre>
-      </div>
+      <RawRecord record={record.value} />
     </div>
   );
 }
