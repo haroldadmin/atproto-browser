@@ -76,7 +76,7 @@ export default function RootLayout({
               </div>
             </div>
           </header>
-          <div className="px-4 lg:px-16 flex-grow">{children}</div>
+          <div className="px-4 lg:px-16 grow">{children}</div>
           <Footer className="px-4 lg:px-16" />
         </ThemeProvider>
       </body>
