@@ -1,3 +1,5 @@
+import "./globals.css";
+
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
@@ -6,7 +8,6 @@ import Link from "next/link";
 import Script from "next/script";
 import logo from "../../public/atproto-browser.svg";
 import ogCard from "../../public/og-card.png";
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ATProto Browser",
@@ -76,7 +77,7 @@ export default function RootLayout({
               </div>
             </div>
           </header>
-          <div className="px-4 lg:px-16 flex-grow">{children}</div>
+          <div className="px-4 lg:px-16 grow">{children}</div>
           <Footer className="px-4 lg:px-16" />
         </ThemeProvider>
       </body>
