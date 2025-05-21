@@ -1,5 +1,6 @@
 import CollectionsList from "@/components/collections-list";
 import DIDDocument from "@/components/did-document";
+import RawRecord from "@/components/raw-record";
 import { Separator } from "@/components/ui/separator";
 import { cachedResolveDidDoc } from "@/lib/did";
 import { extractPDSUrl } from "@/lib/records";
@@ -30,10 +31,7 @@ export default async function CollectionsPage({
         </div>
       </div>
       <Separator className="my-4" />
-      <div className="prose dark:prose-invert w-full">
-        <h2>Record data</h2>
-        <pre>{JSON.stringify(doc, null, 2)}</pre>
-      </div>
+      <RawRecord record={doc} />
     </div>
   );
 }
