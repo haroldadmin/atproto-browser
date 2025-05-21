@@ -11,7 +11,10 @@ export function FeedItem({ post }: FeedItemProps) {
   return (
     <div className="space-y-0">
       <PostText text={post.record.text} />
-      <Link href={`/at/${post.did}/${post.collection}/${post.rkey}`}>
+      <Link
+        href={`/at/${post.did}/${post.collection}/${post.rkey}`}
+        prefetch={false}
+      >
         <LinkSpan className="text-xs">See post</LinkSpan>
       </Link>
     </div>
