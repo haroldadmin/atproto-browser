@@ -17,6 +17,16 @@ export function mapped<T, R>(mapper: (value: T) => R) {
   });
 }
 
+export function filtered<T>(predicate: (value: T) => boolean) {
+  return new TransformStream<T, T>({
+    transform: (chunk, controller) => {
+      if (predicate(chunk)) {
+        controller.enqueue(chunk);
+      }
+    },
+  });
+}
+
 export function collector<T>(callback: (value: T) => void) {
   return new WritableStream<T>({
     start: () => {},

@@ -1,8 +1,8 @@
-import { collector, mapped, sampled } from "@/lib/streams/transforms";
+import { collector, filtered, mapped, sampled } from "@/lib/streams/transforms";
 import { streamMessages } from "@/lib/streams/web-socket";
 import { AppBskyFeedPost } from "@atproto/api";
 import { concat } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDocumentVisibility } from "./useDocumentVisibility";
 
 export const hosts = [
@@ -27,14 +27,38 @@ export type JetstreamPost = {
   collection: string;
 };
 
+function createFilter(query: string) {
+  try {
+    const regex = new RegExp(query, "i");
+    return (post: JetstreamPost | undefined): boolean => {
+      if (!post) {
+        return false;
+      }
+
+      return regex.test(post.record.text);
+    };
+  } catch {
+    return (post: JetstreamPost | undefined): boolean => {
+      if (!post) {
+        return false;
+      }
+
+      return post.record.text.includes(query);
+    };
+  }
+}
+
 export function useJetstream(
   sampleRate: number,
   bufferSize: number,
   active: boolean,
-  host: (typeof hosts)[number]
+  host: (typeof hosts)[number],
+  filterQuery: string = ""
 ) {
   const isVisible = useDocumentVisibility();
   const [posts, setPosts] = useState<JetstreamPost[]>([]);
+
+  const postFilter = useMemo(() => createFilter(filterQuery), [filterQuery]);
 
   const onNewPost = useCallback(
     (post: JetstreamPost | undefined) => {
@@ -56,10 +80,11 @@ export function useJetstream(
     streamMessages(ws)
       .pipeThrough(sampled(sampleRate))
       .pipeThrough(mapped(extractPost))
+      .pipeThrough(filtered(postFilter))
       .pipeTo(collector(onNewPost), { signal: controller.signal });
 
     return () => controller.abort();
-  }, [active, isVisible, sampleRate, onNewPost, host]);
+  }, [active, isVisible, sampleRate, onNewPost, host, postFilter]);
 
   return { posts };
 }
