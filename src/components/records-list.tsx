@@ -106,7 +106,7 @@ function RecordItem({ recordUri }: { recordUri: string }) {
 
   return (
     <li>
-      <Link href={browserUri}>
+      <Link href={browserUri} prefetch={false}>
         <LinkSpan>{atUri.rkey}</LinkSpan>
       </Link>
     </li>
