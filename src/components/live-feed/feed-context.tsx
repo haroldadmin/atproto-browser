@@ -8,6 +8,7 @@ type FeedSettings = {
   collections: string[];
   active: boolean;
   host: (typeof hosts)[number];
+  filterQuery: string;
 };
 
 const defaultSettings: FeedSettings = {
@@ -16,6 +17,7 @@ const defaultSettings: FeedSettings = {
   collections: ["app.bsky.feed.post"],
   active: true,
   host: hosts[0],
+  filterQuery: "",
 };
 
 export type FeedCtx = {
@@ -25,6 +27,7 @@ export type FeedCtx = {
   setCollections: (collections: string[]) => void;
   setActive: (active: boolean) => void;
   setHost: (host: string) => void;
+  setFilterQuery: (filterQuery: string) => void;
 };
 
 const defaultContext: FeedCtx = {
@@ -34,6 +37,7 @@ const defaultContext: FeedCtx = {
   setCollections: noop,
   setActive: noop,
   setHost: noop,
+  setFilterQuery: noop,
 };
 
 export const FeedContext = createContext<FeedCtx>(defaultContext);
@@ -59,6 +63,10 @@ export default function FeedProvider({ children }: React.PropsWithChildren) {
     setContextValue((ctx) => merge({}, ctx, { settings: { host } }));
   }, []);
 
+  const setFilterQuery = useCallback((filterQuery: string) => {
+    setContextValue((ctx) => merge({}, ctx, { settings: { filterQuery } }));
+  }, []);
+
   const [contextValue, setContextValue] = useState<FeedCtx>({
     ...defaultContext,
     setSamplingRate,
@@ -66,6 +74,7 @@ export default function FeedProvider({ children }: React.PropsWithChildren) {
     setCollections,
     setActive,
     setHost,
+    setFilterQuery,
   });
 
   return (

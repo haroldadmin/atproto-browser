@@ -16,7 +16,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
-import { Settings2 as Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import Link from "next/link";
 import { useContext } from "react";
 import LinkSpan from "../link-span";
@@ -30,7 +30,7 @@ export default function FeedSettings() {
   return (
     <Sheet>
       <SheetTrigger>
-        <Settings />
+        <Settings className="w-5 h-5" aria-description="Feed settings" />
       </SheetTrigger>
       <SheetContent className="overflow-y-scroll">
         <SheetHeader>

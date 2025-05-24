@@ -6,6 +6,7 @@ import { range } from "lodash";
 import { Radio } from "lucide-react";
 import { useContext } from "react";
 import FeedProvider, { FeedContext } from "./feed-context";
+import FeedFilter from "./feed-filter";
 import { FeedItem, FeedItemSkeleton } from "./feed-item";
 import FeedSettings from "./feed-settings";
 import { useJetstream } from "./useJetstream";
@@ -15,6 +16,7 @@ export default function LiveFeed() {
     <FeedProvider>
       <div className="max-w-lg">
         <FeedHeader />
+        <FeedFilter />
         <FeedStatus />
         <Separator className="my-4" />
         <FeedPosts />
@@ -69,7 +71,8 @@ function FeedPosts() {
     settings.samplingRate,
     settings.bufferSize,
     settings.active,
-    settings.host
+    settings.host,
+    settings.filterQuery
   );
 
   const showSkeletons = settings.active && posts.length < settings.bufferSize;
