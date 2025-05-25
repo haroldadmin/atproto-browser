@@ -6,5 +6,5 @@ if (!VERCEL_URL) {
 
 export const SITE_URL =
   process.env["VERCEL_TARGET_ENV"] === "production"
-    ? "blog.haroldadmin.com"
+    ? "www.atproto-browser.dev"
     : VERCEL_URL;
