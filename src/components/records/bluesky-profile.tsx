@@ -1,5 +1,5 @@
 import { BskyAvatar } from "@/components/bsky-avatar";
-import { AppBskyActorProfile, BlobRef } from "@atproto/api";
+import { AppBskyActorProfile } from "@atproto/api";
 import { differenceInDays } from "date-fns/differenceInDays";
 import { parseISO } from "date-fns/parseISO";
 
@@ -13,7 +13,7 @@ export default function BlueskyProfileRecord({
   return (
     <div className="prose dark:prose-invert py-4">
       <div className="flex flex-row gap-4">
-        <BskyAvatar avatar={record.avatar?.toJSON() as BlobRef} did={did} />
+        <BskyAvatar avatar={record.avatar?.toJSON()} did={did} />
         <div className="flex flex-col justify-center">
           <h3 className="my-0">{record.displayName}</h3>
           <p className="mb-0 mt-1">{record.description}</p>

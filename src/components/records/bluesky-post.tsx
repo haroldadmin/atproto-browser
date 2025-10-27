@@ -101,11 +101,16 @@ function ReplyParent({
       collection: atUri.collection,
       rkey: atUri.rkey,
       pds: pdsUrl,
-    })
+    }),
   );
 
   if (!AppBskyFeedPost.isRecord(post.value)) {
     return null;
+  }
+
+  const validation = AppBskyFeedPost.validateRecord(post.value);
+  if (!validation.success) {
+    throw new Error(`Invalid ${post.value.$type} record`);
   }
 
   return (
@@ -121,7 +126,7 @@ function ReplyParent({
           </p>
         </AccordionTrigger>
         <AccordionContent className="ml-2">
-          <BlueskyPostRecord record={post.value} depth={depth + 1} />
+          <BlueskyPostRecord record={validation.value} depth={depth + 1} />
         </AccordionContent>
       </AccordionItem>
     </Accordion>

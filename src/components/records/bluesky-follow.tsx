@@ -1,5 +1,5 @@
 import LinkSpan from "@/components/link-span";
-import { AppBskyGraphFollow, BlobRef } from "@atproto/api";
+import { AppBskyGraphFollow } from "@atproto/api";
 import Link from "next/link";
 import { Suspense, use } from "react";
 import { cachedFetchProfile } from "@/lib/records";
@@ -39,7 +39,7 @@ function EmbeddedProfile({ did, pds }: { did: string; pds: string }) {
 
   return (
     <div className="flex flex-row gap-4 my-8">
-      <BskyAvatar avatar={profile.avatar?.toJSON() as BlobRef} did={did} />
+      <BskyAvatar avatar={profile.avatar?.toJSON()} did={did} />
       <div className="flex flex-col justify-center max-w-lg">
         <h3 className="my-0">{profile.displayName}</h3>
         <p className="mb-0 mt-1">{profile.description}</p>
