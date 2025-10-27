@@ -41,12 +41,17 @@ function EmbeddedPost({ uri, pds }: EmbeddedPostProps) {
       collection: uri.collection,
       rkey: uri.rkey,
       pds,
-    })
+    }),
   );
 
   if (!AppBskyFeedPost.isRecord(post.value)) {
     return null;
   }
 
-  return <BlueskyPostRecord record={post.value} showReplies={false} />;
+  const validation = AppBskyFeedPost.validateRecord(post.value);
+  if (!validation.success) {
+    throw new Error(`Invalid ${post.value.$type} record`);
+  }
+
+  return <BlueskyPostRecord record={validation.value} showReplies={false} />;
 }

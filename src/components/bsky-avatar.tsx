@@ -1,13 +1,13 @@
 "use client";
 
-import { BlobRef } from "@atproto/api";
+import { TypedJsonBlobRef } from "@atproto/lexicon";
 import Image from "next/image";
 
 export function BskyAvatar({
   avatar,
   did,
 }: {
-  avatar: BlobRef | undefined;
+  avatar: TypedJsonBlobRef | undefined;
   did: string;
 }) {
   if (!avatar || !did) {
@@ -21,7 +21,7 @@ export function BskyAvatar({
 
   const url = new URL(
     `/img/avatar/plain/${decodeURIComponent(did)}/${avatar.ref.$link}@jpeg`,
-    "https://cdn.bsky.app"
+    "https://cdn.bsky.app",
   );
 
   return (

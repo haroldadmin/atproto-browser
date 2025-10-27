@@ -61,19 +61,39 @@ function RecordWrapper({
   did: string;
 }) {
   if (AppBskyGraphFollow.isRecord(value)) {
-    return <BlueskyFollowRecord record={value} pds={pds} />;
+    const validation = AppBskyGraphFollow.validateRecord(value);
+    if (!validation.success) {
+      throw new Error(`Invalid ${value.$type} record`);
+    }
+
+    return <BlueskyFollowRecord record={validation.value} pds={pds} />;
   }
 
   if (AppBskyFeedLike.isRecord(value)) {
-    return <BlueskyLikeRecord record={value} pds={pds} />;
+    const validation = AppBskyFeedLike.validateRecord(value);
+    if (!validation.success) {
+      throw new Error(`Invalid ${value.$type} record`);
+    }
+
+    return <BlueskyLikeRecord record={validation.value} pds={pds} />;
   }
 
   if (AppBskyFeedPost.isRecord(value)) {
-    return <BlueskyPostRecord record={value} />;
+    const validation = AppBskyFeedPost.validateRecord(value);
+    if (!validation.success) {
+      throw new Error(`Invalid ${value.$type} record`);
+    }
+
+    return <BlueskyPostRecord record={validation.value} />;
   }
 
   if (AppBskyActorProfile.isRecord(value)) {
-    return <BlueskyProfileRecord record={value} did={did} />;
+    const validation = AppBskyActorProfile.validateRecord(value);
+    if (!validation.success) {
+      throw new Error(`Invalid ${value.$type} record`);
+    }
+
+    return <BlueskyProfileRecord record={validation.value} did={did} />;
   }
 
   return null;
