@@ -8,12 +8,17 @@ type FetchCollectionsParams = {
 };
 
 async function fetchCollections({ did, pds }: FetchCollectionsParams) {
-  const agent = new Agent(pds);
-  const { data } = await agent.com.atproto.repo.describeRepo({
-    repo: did,
-  });
+  try {
+    const agent = new Agent(pds);
+    const { data } = await agent.com.atproto.repo.describeRepo({
+      repo: did,
+    });
 
-  return data.collections;
+    return data.collections;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
 }
 
 export const cachedFetchCollections = cache(fetchCollections);
