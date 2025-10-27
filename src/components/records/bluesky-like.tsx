@@ -44,6 +44,10 @@ function EmbeddedPost({ uri, pds }: EmbeddedPostProps) {
     }),
   );
 
+  if (!post) {
+    return null;
+  }
+
   if (!AppBskyFeedPost.isRecord(post.value)) {
     return null;
   }

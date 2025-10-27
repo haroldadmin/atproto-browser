@@ -8,12 +8,17 @@ type FetchCollectionsParams = {
 };
 
 async function fetchCollections({ did, pds }: FetchCollectionsParams) {
-  const agent = new Agent(pds);
-  const { data } = await agent.com.atproto.repo.describeRepo({
-    repo: did,
-  });
+  try {
+    const agent = new Agent(pds);
+    const { data } = await agent.com.atproto.repo.describeRepo({
+      repo: did,
+    });
 
-  return data.collections;
+    return data.collections;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
 }
 
 export const cachedFetchCollections = cache(fetchCollections);
@@ -31,14 +36,19 @@ async function fetchRecords({
   pds,
   cursor,
 }: FetchRecordsParams) {
-  const agent = new Agent(pds);
-  const { data } = await agent.com.atproto.repo.listRecords({
-    repo: did,
-    collection,
-    cursor,
-  });
+  try {
+    const agent = new Agent(pds);
+    const { data } = await agent.com.atproto.repo.listRecords({
+      repo: did,
+      collection,
+      cursor,
+    });
 
-  return data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
 }
 
 export const cachedFetchRecords = cache(fetchRecords);
@@ -51,21 +61,26 @@ type FetchRecordParams = {
 };
 
 async function fetchRecord({ did, collection, rkey, pds }: FetchRecordParams) {
-  const agent = new Agent(pds);
-  const { data } = await agent.com.atproto.repo.getRecord({
-    repo: did,
-    collection,
-    rkey,
-  });
+  try {
+    const agent = new Agent(pds);
+    const { data } = await agent.com.atproto.repo.getRecord({
+      repo: did,
+      collection,
+      rkey,
+    });
 
-  return data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
 }
 
 export const cachedFetchRecord = cache(fetchRecord);
 
 export function extractPDSUrl(didDoc: DidDocument): string | undefined {
   const pdsService = didDoc.service?.find(
-    (service) => service.id === "#atproto_pds"
+    (service) => service.id === "#atproto_pds",
   );
   return pdsService?.serviceEndpoint as string;
 }

@@ -19,19 +19,23 @@ export default async function CollectionPage({
     notFound();
   }
 
-  const { records, cursor } = await cachedFetchRecords({
+  const result = await cachedFetchRecords({
     did: doc.id,
     collection,
     pds,
   });
 
+  if (!result) {
+    notFound();
+  }
+
   return (
     <RecordsList
-      initialData={records.map((r) => r.uri)}
+      initialData={result.records.map((r) => r.uri)}
       did={decodeURIComponent(did)}
       collection={decodeURIComponent(collection)}
       pds={pds}
-      cursor={cursor}
+      cursor={result.cursor}
     />
   );
 }
