@@ -31,14 +31,19 @@ async function fetchRecords({
   pds,
   cursor,
 }: FetchRecordsParams) {
-  const agent = new Agent(pds);
-  const { data } = await agent.com.atproto.repo.listRecords({
-    repo: did,
-    collection,
-    cursor,
-  });
+  try {
+    const agent = new Agent(pds);
+    const { data } = await agent.com.atproto.repo.listRecords({
+      repo: did,
+      collection,
+      cursor,
+    });
 
-  return data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
 }
 
 export const cachedFetchRecords = cache(fetchRecords);
