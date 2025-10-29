@@ -1,4 +1,5 @@
 import RawRecord from "@/components/raw-record";
+import RecordCID from "@/components/record-cid";
 import BlueskyFollowRecord from "@/components/records/bluesky-follow";
 import BlueskyLikeRecord from "@/components/records/bluesky-like";
 import BlueskyPostRecord from "@/components/records/bluesky-post";
@@ -46,6 +47,7 @@ export default async function RecordPage({
     <div>
       <RecordWrapper value={record.value} pds={pds} did={did} />
       <Separator className="my-4" />
+      {record.cid && <RecordCID cid={record.cid} />}
       <RawRecord record={record.value} />
     </div>
   );
