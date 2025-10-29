@@ -7,7 +7,11 @@ export default function RecordCID({ cid }: { cid: string }) {
 
   return (
     <div className="my-4">
-      <Link target="_blank" referrerPolicy="no-referrer" href={inspectUrl}>
+      <Link
+        target="_blank"
+        referrerPolicy="no-referrer"
+        href={inspectUrl.toString()}
+      >
         <div className="border border-dashed p-2 rounded-md flex items-center gap-2 max-w-fit">
           <h2 className="font-bold text-sm">CID</h2>
           <p className="font-mono text-sm underline overflow-hidden">{cid}</p>
