@@ -53,7 +53,7 @@ export function useJetstream(
   bufferSize: number,
   active: boolean,
   host: (typeof hosts)[number],
-  filterQuery: string = ""
+  filterQuery: string = "",
 ) {
   const isVisible = useDocumentVisibility();
   const [posts, setPosts] = useState<JetstreamPost[]>([]);
@@ -66,7 +66,7 @@ export function useJetstream(
         setPosts((posts) => concat(post, posts.slice(0, bufferSize)));
       }
     },
-    [bufferSize]
+    [bufferSize],
   );
 
   useEffect(() => {

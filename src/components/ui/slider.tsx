@@ -14,7 +14,7 @@ function Slider({
       data-slot="slider"
       className={cn(
         "relative flex w-full touch-none select-none items-center",
-        className
+        className,
       )}
       {...props}
     >

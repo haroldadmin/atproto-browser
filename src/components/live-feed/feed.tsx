@@ -35,7 +35,7 @@ function FeedHeader() {
           aria-label={settings.active ? "Pause" : "Resume"}
           className={clsx(
             !settings.active && "text-gray-300",
-            settings.active && "animate-pulse text-blue-500"
+            settings.active && "animate-pulse text-blue-500",
           )}
         />
       </button>
@@ -72,7 +72,7 @@ function FeedPosts() {
     settings.bufferSize,
     settings.active,
     settings.host,
-    settings.filterQuery
+    settings.filterQuery,
   );
 
   const showSkeletons = settings.active && posts.length < settings.bufferSize;

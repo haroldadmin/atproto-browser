@@ -13,7 +13,7 @@ export type DIDFormState = z.infer<typeof schema>;
 
 export async function fetchDidDoc(
   prevState: DIDFormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<DIDFormState> {
   const formObject = Object.fromEntries(formData.entries());
   const parsed = schema.safeParse(formObject);
