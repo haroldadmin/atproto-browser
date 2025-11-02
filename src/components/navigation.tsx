@@ -53,7 +53,7 @@ function NavigationLink({
         className={clsx(
           "text-sm text-gray-600 dark:text-gray-400 hover:underline flex flex-row items-center gap-1",
           pathname === href &&
-            "text-gray-900 dark:text-gray-50 pointer-events-none font-bold"
+            "text-gray-900 dark:text-gray-50 pointer-events-none font-bold",
         )}
       >
         {children}

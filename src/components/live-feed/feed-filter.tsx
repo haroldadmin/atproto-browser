@@ -14,7 +14,7 @@ export default function FeedFilter() {
       <ListFilter
         className={clsx(
           "absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4",
-          settings.filterQuery && "text-blue-500"
+          settings.filterQuery && "text-blue-500",
         )}
       />
       <Input
@@ -26,7 +26,7 @@ export default function FeedFilter() {
         onChange={(e) => setFilterQuery(e.target.value)}
         className={clsx(
           "pl-10 shadow-none",
-          settings.filterQuery && "border-blue-500 focus:border-blue-500"
+          settings.filterQuery && "border-blue-500 focus:border-blue-500",
         )}
         aria-description="Filter posts by text"
       />

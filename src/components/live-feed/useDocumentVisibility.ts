@@ -11,12 +11,12 @@ export function useDocumentVisibility() {
   useEffect(() => {
     globalThis.document.addEventListener(
       "visibilitychange",
-      onVisibilityChange
+      onVisibilityChange,
     );
     return () => {
       globalThis.document.removeEventListener(
         "visibilitychange",
-        onVisibilityChange
+        onVisibilityChange,
       );
     };
   }, [onVisibilityChange]);

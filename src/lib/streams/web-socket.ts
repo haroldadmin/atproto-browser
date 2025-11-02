@@ -1,5 +1,5 @@
 export function streamMessages(
-  connection: WebSocket
+  connection: WebSocket,
 ): ReadableStream<MessageEvent> {
   const stream = new ReadableStream<MessageEvent>(
     {
@@ -12,7 +12,7 @@ export function streamMessages(
         connection.close();
       },
     },
-    new CountQueuingStrategy({ highWaterMark: 1 })
+    new CountQueuingStrategy({ highWaterMark: 1 }),
   );
 
   return stream;

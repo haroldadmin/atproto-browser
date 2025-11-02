@@ -13,7 +13,7 @@ async function* generateRecords(
   did: string,
   collection: string,
   pds: string,
-  cursor?: string
+  cursor?: string,
 ) {
   if (!cursor) {
     return;
