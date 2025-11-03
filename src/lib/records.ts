@@ -1,5 +1,4 @@
 import { Agent, AppBskyActorProfile } from "@atproto/api";
-import { DidDocument } from "@atproto/identity";
 import { cache } from "react";
 
 type FetchCollectionsParams = {
