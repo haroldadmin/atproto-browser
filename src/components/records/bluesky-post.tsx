@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cachedResolveDidDoc } from "@/lib/did";
-import { cachedFetchRecord, extractPDSUrl } from "@/lib/records";
+import { cachedFetchRecord } from "@/lib/records";
 import { atUriToBrowserUri } from "@/lib/uris";
 import { AppBskyFeedPost, AtUri } from "@atproto/api";
 import { AccordionItem } from "@radix-ui/react-accordion";
@@ -13,6 +13,7 @@ import { Info, Reply } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
 import LinkSpan from "../link-span";
+import { getPds } from "@atproto/identity";
 
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
@@ -90,7 +91,7 @@ function ReplyParent({
     return null;
   }
 
-  const pdsUrl = extractPDSUrl(didDoc);
+  const pdsUrl = getPds(didDoc);
   if (!pdsUrl) {
     return null;
   }

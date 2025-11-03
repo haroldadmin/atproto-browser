@@ -1,14 +1,11 @@
 import CollectionsList from "@/components/collections-list";
-import { Download } from "lucide-react";
 import DIDDocument from "@/components/did-document";
 import RawRecord from "@/components/raw-record";
 import { Separator } from "@/components/ui/separator";
 import { cachedResolveDidDoc } from "@/lib/did";
-import { extractPDSUrl } from "@/lib/records";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import ExportButton from "@/components/export-button";
+import { getPds } from "@atproto/identity";
 
 export default async function CollectionsPage({
   params,
@@ -21,7 +18,7 @@ export default async function CollectionsPage({
     notFound();
   }
 
-  const pdsUrl = extractPDSUrl(doc);
+  const pdsUrl = getPds(doc);
   if (!pdsUrl) {
     notFound();
   }

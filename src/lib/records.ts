@@ -78,13 +78,6 @@ async function fetchRecord({ did, collection, rkey, pds }: FetchRecordParams) {
 
 export const cachedFetchRecord = cache(fetchRecord);
 
-export function extractPDSUrl(didDoc: DidDocument): string | undefined {
-  const pdsService = didDoc.service?.find(
-    (service) => service.id === "#atproto_pds",
-  );
-  return pdsService?.serviceEndpoint as string;
-}
-
 async function fetchProfile(did: string, pds: string) {
   const agent = new Agent(pds);
   const { data } = await agent.com.atproto.repo.getRecord({

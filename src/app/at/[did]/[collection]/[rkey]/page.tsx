@@ -6,13 +6,14 @@ import BlueskyPostRecord from "@/components/records/bluesky-post";
 import BlueskyProfileRecord from "@/components/records/bluesky-profile";
 import { Separator } from "@/components/ui/separator";
 import { cachedResolveDidDoc } from "@/lib/did";
-import { cachedFetchRecord, extractPDSUrl } from "@/lib/records";
+import { cachedFetchRecord } from "@/lib/records";
 import {
   AppBskyActorProfile,
   AppBskyFeedLike,
   AppBskyFeedPost,
   AppBskyGraphFollow,
 } from "@atproto/api";
+import { getPds } from "@atproto/identity";
 import { notFound } from "next/navigation";
 
 export default async function RecordPage({
@@ -27,7 +28,7 @@ export default async function RecordPage({
     notFound();
   }
 
-  const pds = extractPDSUrl(doc);
+  const pds = getPds(doc);
   if (!pds) {
     notFound();
   }
