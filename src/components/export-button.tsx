@@ -8,7 +8,7 @@ export type ExportButtonProps = {
 };
 
 export default function ExportButton({ did, pds }: ExportButtonProps) {
-  const exportUrl = new URL(`/xrpc/com.atproto.sync.getRepo`, pds);
+  const exportUrl = new URL("/xrpc/com.atproto.sync.getRepo", pds);
   exportUrl.searchParams.append("did", did);
 
   return (
