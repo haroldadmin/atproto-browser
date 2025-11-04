@@ -6,6 +6,7 @@ import { cachedResolveDidDoc } from "@/lib/did";
 import { notFound } from "next/navigation";
 import ExportButton from "@/components/export-button";
 import { getPds } from "@atproto/identity";
+import BlobsList from "@/components/blobs-list";
 
 export default async function CollectionsPage({
   params,
@@ -31,6 +32,7 @@ export default async function CollectionsPage({
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 my-4">
         <CollectionsList did={doc.id} pds={pdsUrl} />
+        <BlobsList did={doc.id} pds={pdsUrl} />
         <div className="col-span-1 lg:col-span-2">
           <DIDDocument didDocument={doc} />
         </div>
