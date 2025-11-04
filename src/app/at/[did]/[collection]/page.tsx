@@ -1,6 +1,7 @@
 import RecordsList from "@/components/records-list";
 import { cachedResolveDidDoc } from "@/lib/did";
-import { cachedFetchRecords, extractPDSUrl } from "@/lib/records";
+import { cachedFetchRecords } from "@/lib/records";
+import { getPds } from "@atproto/identity";
 import { notFound } from "next/navigation";
 
 export default async function CollectionPage({
@@ -14,7 +15,7 @@ export default async function CollectionPage({
     notFound();
   }
 
-  const pds = extractPDSUrl(doc);
+  const pds = getPds(doc);
   if (!pds) {
     notFound();
   }
