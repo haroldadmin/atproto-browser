@@ -31,11 +31,11 @@ export default async function CollectionsPage({
         <ExportButton did={doc.id} pds={pdsUrl} />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 my-4">
-        <CollectionsList did={doc.id} pds={pdsUrl} />
-        <BlobsList did={doc.id} pds={pdsUrl} limit={10} />
-        <div className="col-span-1 lg:col-span-2">
+        <div className="col-span-1 lg:col-span-3">
           <DIDDocument didDocument={doc} />
         </div>
+        <CollectionsList did={doc.id} pds={pdsUrl} />
+        <BlobsList did={doc.id} pds={pdsUrl} limit={10} />
       </div>
       <Separator className="my-4" />
       <RawRecord record={doc} />
