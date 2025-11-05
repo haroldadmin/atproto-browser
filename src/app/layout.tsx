@@ -10,7 +10,10 @@ import logo from "../../public/atproto-browser.svg";
 import ogCard from "../../public/og-card.png";
 
 export const metadata: Metadata = {
-  title: "ATProto Browser",
+  title: {
+    template: "%s | ATProto Browser",
+    default: "ATProto Browser",
+  },
   description: "Experimental browser for the Atmosphere",
   openGraph: {
     type: "website",
