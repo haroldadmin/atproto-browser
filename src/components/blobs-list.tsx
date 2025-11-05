@@ -1,7 +1,7 @@
 "use client";
 
 import { generateBlobs } from "@/lib/blobs";
-import { LoaderCircle, File } from "lucide-react";
+import { LoaderCircle, File, ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import Link from "next/link";
@@ -43,11 +43,10 @@ export default function BlobsList({ did, pds, limit }: BlobsListProps) {
         ))}
         {hasMore && <LoaderCircle ref={ref} className="animate-spin" />}
         {!hasMore && limit === undefined && <p>No more blobs</p>}
-        {!hasMore && limit !== undefined && (
-          <p>
-            <Link href={`/at/${did}/blobs`}>View all</Link>
-          </p>
-        )}
+        <p className="text-sm mt-2 hover:underline">
+          <Link href={`/at/${did}/blobs`}>View all</Link>
+          <ArrowRight className="w-4 h-4 mb-0.5 ml-1 inline" />
+        </p>
       </ul>
     </div>
   );
@@ -66,7 +65,9 @@ function BlobListItem({ cid, did, pds }: BlobListItemProps) {
 
   return (
     <li className="flex flex-row items-center gap-2">
-      <File className="w-4 h-4 inline" />
+      <div>
+        <File className="w-4 h-4" />
+      </div>
       <Link href={blobUrl.toString()}>
         <LinkSpan>{cid}</LinkSpan>
       </Link>
