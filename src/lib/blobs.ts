@@ -1,39 +1,33 @@
 import { Agent } from "@atproto/api";
 
-export type ListBlobsParams = {
-  pds: string;
-  did: string;
-  limit: number;
-};
-
-export async function listBlobs({ pds, did, limit }: ListBlobsParams) {
-  const cids = await Array.fromAsync(streamBlobs(did, pds, limit));
-  return cids;
-}
-
-async function* streamBlobs(did: string, pds: string, limit: number) {
+export async function* generateBlobs(
+  did: string,
+  pds: string,
+  limit = Number.POSITIVE_INFINITY,
+) {
   const agent = new Agent(pds);
+  const pageSize = Math.min(50, limit);
 
-  let cursor: string | undefined;
   let emitted = 0;
+  let cursor: string | undefined;
   while (emitted < limit) {
     const { data, success } = await agent.com.atproto.sync.listBlobs({
       did,
       cursor,
-      limit: 20,
+      limit: pageSize,
     });
 
     if (!success) {
       throw new Error(`Failed to list blobs for ${did} after ${cursor}`);
     }
 
-    if (!data.cids.length) {
+    if (!data.cids.length || data.cids.length < pageSize) {
       break;
     }
 
     cursor = data.cursor;
-    emitted += data.cids.length;
 
+    emitted += data.cids.length;
     yield* data.cids;
   }
 }

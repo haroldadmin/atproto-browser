@@ -1,40 +1,75 @@
-import { listBlobs } from "@/lib/blobs";
-import { ArrowRight, File } from "lucide-react";
+"use client";
+
+import { generateBlobs } from "@/lib/blobs";
+import { LoaderCircle, File } from "lucide-react";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 import LinkSpan from "./link-span";
+import { useGenerator } from "@/hooks/useGenerator";
 
 export type BlobsListProps = {
   did: string;
   pds: string;
+  limit?: number;
 };
 
-export default async function BlobsList({ did, pds }: BlobsListProps) {
-  const blobs = await listBlobs({ pds, did, limit: 20 });
+export default function BlobsList({ did, pds, limit }: BlobsListProps) {
+  const {
+    generate,
+    items: cids,
+    hasMore,
+    loading,
+  } = useGenerator(() => generateBlobs(did, pds, limit));
+
+  const { ref, inView } = useInView({
+    skip: !hasMore || loading,
+  });
+
+  useEffect(() => {
+    if (!inView || loading || !hasMore) {
+      return;
+    }
+
+    generate();
+  }, [inView, loading, cids, hasMore]);
+
   return (
     <div>
-      <div className="flex flex-row items-center gap-8">
-        <h3 className="text-xl font-bold">Blobs</h3>
-      </div>
-      {blobs.length > 0 && (
-        <ul className="flex flex-col gap-2 mt-4">
-          {blobs.map((cid) => (
-            <li className="flex flex-row items-center gap-2" key={cid}>
-              <File className="w-4 h-4 mt-1" />
-              <Link href={`/at/${did}/blobs/${cid}`}>
-                <LinkSpan>{cid}</LinkSpan>
-              </Link>
-            </li>
-          ))}
-          <p className="text-sm hover:underline mt-4">
-            <Link href={`/at/${did}/blobs`}>
-              View all <ArrowRight className="w-4 h-4 inline ml-1 mb-0.5" />
-            </Link>
+      <h3 className="text-xl font-bold">Blobs</h3>
+      <ul className="flex flex-col gap-2 mt-4">
+        {cids.map((cid) => (
+          <BlobListItem key={cid} cid={cid} did={did} pds={pds} />
+        ))}
+        {hasMore && <LoaderCircle ref={ref} className="animate-spin" />}
+        {!hasMore && limit === undefined && <p>No more blobs</p>}
+        {!hasMore && limit !== undefined && (
+          <p>
+            <Link href={`/at/${did}/blobs`}>View all</Link>
           </p>
-        </ul>
-      )}
-      {blobs.length === 0 && (
-        <p className="italic text-muted-foreground mt-4">No blobs found</p>
-      )}
+        )}
+      </ul>
     </div>
+  );
+}
+
+type BlobListItemProps = {
+  cid: string;
+  did: string;
+  pds: string;
+};
+
+function BlobListItem({ cid, did, pds }: BlobListItemProps) {
+  const blobUrl = new URL(`/xrpc/com.atproto.sync.getBlob`, pds);
+  blobUrl.searchParams.append("did", did);
+  blobUrl.searchParams.append("cid", cid);
+
+  return (
+    <li className="flex flex-row items-center gap-2">
+      <File className="w-4 h-4 inline" />
+      <Link href={blobUrl.toString()}>
+        <LinkSpan>{cid}</LinkSpan>
+      </Link>
+    </li>
   );
 }
