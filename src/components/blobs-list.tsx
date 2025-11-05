@@ -42,14 +42,34 @@ export default function BlobsList({ did, pds, limit }: BlobsListProps) {
           <BlobListItem key={cid} cid={cid} did={did} pds={pds} />
         ))}
         {hasMore && <LoaderCircle ref={ref} className="animate-spin" />}
-        {!hasMore && limit === undefined && <p>No more blobs</p>}
-        <p className="text-sm mt-2 hover:underline">
-          <Link href={`/at/${did}/blobs`}>View all</Link>
-          <ArrowRight className="w-4 h-4 mb-0.5 ml-1 inline" />
-        </p>
+        {!hasMore && <EndOfList numItems={cids.length} limit={limit} />}
+        {!hasMore && limit !== undefined && cids.length > 0 && (
+          <p className="text-sm mt-2 hover:underline">
+            <Link href={`/at/${did}/blobs`}>View all</Link>
+            <ArrowRight className="w-4 h-4 mb-0.5 ml-1 inline" />
+          </p>
+        )}
       </ul>
     </div>
   );
+}
+
+function EndOfList({
+  numItems,
+  limit,
+}: {
+  numItems: number;
+  limit: number | undefined;
+}) {
+  if (numItems === 0) {
+    return <p className="text-muted-foreground italic">No blobs found</p>;
+  }
+
+  if (limit === undefined) {
+    return <p className="text-muted-foreground italic">No more blobs</p>;
+  }
+
+  return null;
 }
 
 type BlobListItemProps = {
@@ -68,7 +88,11 @@ function BlobListItem({ cid, did, pds }: BlobListItemProps) {
       <div>
         <File className="w-4 h-4" />
       </div>
-      <Link href={blobUrl.toString()}>
+      <Link
+        href={blobUrl.toString()}
+        target="_blank"
+        referrerPolicy="no-referrer"
+      >
         <LinkSpan>{cid}</LinkSpan>
       </Link>
     </li>
