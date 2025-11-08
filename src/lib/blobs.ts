@@ -21,7 +21,7 @@ export async function* generateBlobs(
       throw new Error(`Failed to list blobs for ${did} after ${cursor}`);
     }
 
-    if (!data.cids.length || data.cids.length < pageSize) {
+    if (!data.cids.length) {
       break;
     }
 
