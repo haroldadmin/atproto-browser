@@ -1,7 +1,6 @@
 import { BskyAvatar } from "@/components/bsky-avatar";
 import { AppBskyActorProfile } from "@atproto/api";
-import { differenceInDays } from "date-fns/differenceInDays";
-import { parseISO } from "date-fns/parseISO";
+import { Temporal } from "temporal-polyfill";
 
 export default function BlueskyProfileRecord({
   record,
@@ -35,11 +34,16 @@ function JoiningDate({ date }: { date: string | undefined }) {
     return null;
   }
 
-  const daysSinceJoined = differenceInDays(parseISO(date), new Date());
+  const joinedAt = Temporal.Instant.from(date)
+    .toZonedDateTimeISO("UTC")
+    .toPlainDate();
+
+  const today = Temporal.Now.plainDateISO();
 
   return (
     <p className="my-0">
-      Joined {new Intl.RelativeTimeFormat().format(daysSinceJoined, "days")}
+      Joined{" "}
+      {new Intl.RelativeTimeFormat().format(joinedAt.since(today).days, "days")}
     </p>
   );
 }
