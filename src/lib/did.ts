@@ -1,9 +1,8 @@
 import { IdResolver, MemoryCache } from "@atproto/identity";
-import { hoursToMilliseconds } from "date-fns/hoursToMilliseconds";
 import { cache } from "react";
 
-const oneHourMillis = hoursToMilliseconds(1);
-const oneDayMillis = hoursToMilliseconds(24);
+const oneHourMillis = 1 * 60 * 60 * 1000;
+const oneDayMillis = oneHourMillis * 24;
 
 const resolver = new IdResolver({
   didCache: new MemoryCache(oneHourMillis, oneDayMillis),
