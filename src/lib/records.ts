@@ -85,7 +85,16 @@ async function fetchProfile(did: string, pds: string) {
     rkey: "self",
   });
 
-  return data.value as AppBskyActorProfile.Record;
+  if (!AppBskyActorProfile.isRecord(data.value)) {
+    throw new Error(`Invalid profile record for ${did}`);
+  }
+
+  const validationResult = AppBskyActorProfile.validateRecord(data.value);
+  if (!validationResult.success) {
+    throw new Error(`Malformed profile record for ${did}`);
+  }
+
+  return validationResult.value;
 }
 
 export const cachedFetchProfile = cache(fetchProfile);

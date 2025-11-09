@@ -11,12 +11,18 @@ export default function BlueskyProfileRecord({
   did: string;
 }) {
   return (
-    <div className="prose dark:prose-invert py-4">
-      <div className="flex flex-row gap-4">
-        <BskyAvatar avatar={record.avatar?.toJSON()} did={did} />
-        <div className="flex flex-col justify-center">
-          <h3 className="my-0">{record.displayName}</h3>
-          <p className="mb-0 mt-1">{record.description}</p>
+    <div className="py-4">
+      <div className="flex flex-row items-center gap-4 mb-4">
+        {record.avatar && (
+          <BskyAvatar
+            avatarCID={record.avatar.ref.toString()}
+            mimeType={record.avatar.mimeType}
+            did={did}
+          />
+        )}
+        <div>
+          <h3 className="text-lg font-bold">{record.displayName}</h3>
+          <p className="mt-1">{record.description}</p>
         </div>
       </div>
       <JoiningDate date={record.createdAt} />

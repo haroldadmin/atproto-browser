@@ -39,7 +39,13 @@ function EmbeddedProfile({ did, pds }: { did: string; pds: string }) {
 
   return (
     <div className="flex flex-row gap-4 my-8">
-      <BskyAvatar avatar={profile.avatar?.toJSON()} did={did} />
+      {profile.avatar && (
+        <BskyAvatar
+          avatarCID={profile.avatar.ref.toString()}
+          mimeType={profile.avatar.mimeType}
+          did={did}
+        />
+      )}
       <div className="flex flex-col justify-center max-w-lg">
         <h3 className="my-0">{profile.displayName}</h3>
         <p className="mb-0 mt-1">{profile.description}</p>
