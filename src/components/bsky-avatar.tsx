@@ -1,26 +1,23 @@
 "use client";
 
-import { TypedJsonBlobRef } from "@atproto/lexicon";
 import Image from "next/image";
 
 export function BskyAvatar({
-  avatar,
+  avatarCID,
+  mimeType,
   did,
 }: {
-  avatar: TypedJsonBlobRef | undefined;
+  avatarCID: string;
+  mimeType: string;
   did: string;
 }) {
-  if (!avatar || !did) {
-    return null;
-  }
-
-  const [type] = avatar.mimeType.split("/");
+  const [type] = mimeType.split("/");
   if (type !== "image") {
     return null;
   }
 
   const url = new URL(
-    `/img/avatar/plain/${decodeURIComponent(did)}/${avatar.ref.$link}@jpeg`,
+    `/img/avatar/plain/${decodeURIComponent(did)}/${avatarCID}@jpeg`,
     "https://cdn.bsky.app",
   );
 
