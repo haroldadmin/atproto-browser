@@ -81,7 +81,7 @@ export function inferKeyLength(
 ): number {
   const multikeyBytes = codec.decode(key);
 
-  const [_, codecLength] = varint.decode(multikeyBytes);
+  const [, codecLength] = varint.decode(multikeyBytes);
   const keyBytes = multikeyBytes.subarray(codecLength);
   return keyBytes.byteLength;
 }

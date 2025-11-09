@@ -32,7 +32,8 @@ describe(inferKeyLength, () => {
     const base = inferMultibase(key);
     expect(base?.decoder).toBeDefined();
 
-    const keyLength = inferKeyLength(key, base?.decoder!);
+    // eslint-suppress-line @typescript-eslint/no-non-null-asserted-optional-chain
+    const keyLength = inferKeyLength(key, base!.decoder!);
     expect(keyLength).toBe(33);
   });
 });
