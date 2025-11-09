@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { DidDocument } from "@atproto/identity";
 import { Fingerprint } from "lucide-react";
+import Multikey from "./multikey";
 
 export default function DIDDocument({
   didDocument,
@@ -56,9 +57,11 @@ export default function DIDDocument({
                   <TableCell>{doc.id}</TableCell>
                   <TableCell>{doc.type}</TableCell>
                   <TableCell>{doc.controller}</TableCell>
-                  <TableCell className="font-mono">
-                    {doc.publicKeyMultibase}
-                  </TableCell>
+                  {doc.publicKeyMultibase && (
+                    <TableCell className="font-mono">
+                      <Multikey multikey={doc.publicKeyMultibase} />
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
