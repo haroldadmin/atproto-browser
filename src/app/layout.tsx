@@ -45,8 +45,8 @@ export default function RootLayout({
       <head>
         <Script
           defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="943ae901-ec6c-4bb2-b39c-383b80b3d8ab"
+          src="https://umami.haroldadmin.cloud/script.js"
+          data-website-id="f6076805-be67-4695-beaa-3626218ac92f"
           data-domains="www.atproto-browser.dev"
           data-do-not-track="true"
         />
