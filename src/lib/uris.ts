@@ -1,5 +1,5 @@
 import { AtUri } from "@atproto/api";
-import { join } from "lodash";
+import { isObject, join } from "lodash";
 import type { ShikiTransformer } from "shiki";
 import { visit } from "unist-util-visit";
 
@@ -93,6 +93,61 @@ export const DidTransformer: ShikiTransformer = {
   },
 };
 
+export const BlobLinkTransformer: (
+  did: string,
+  pds: string,
+) => ShikiTransformer = (did, pds) => {
+  let cids: string[] = [];
+
+  return {
+    name: "blob-linker",
+    preprocess: (code) => {
+      try {
+        cids = findBlobCIDs(JSON.parse(code));
+      } catch {
+        cids = [];
+      }
+    },
+    line: (node) => {
+      if (!cids.length) {
+        return;
+      }
+
+      visit(node, ["text"], (element, _, parent) => {
+        if (element.type !== "text") {
+          return;
+        }
+
+        if (!parent) {
+          return;
+        }
+
+        const value = unquote(element.value);
+        if (!cids.includes(value)) {
+          return;
+        }
+
+        const blobUrl = new URL(`/xrpc/com.atproto.sync.getBlob`, pds);
+        blobUrl.searchParams.append("did", did);
+        blobUrl.searchParams.append("cid", value);
+
+        parent.children = [
+          {
+            type: "element",
+            tagName: "a",
+            children: [element],
+            properties: {
+              class: "underline-offset-4 text-accent dark:text-foreground",
+              target: "_blank",
+              href: blobUrl.toString(),
+            },
+          },
+        ];
+      });
+    },
+  };
+};
+
 function parseATURI(value: string): AtUri | undefined {
   try {
     return new AtUri(value);
@@ -121,4 +176,54 @@ function unquote(value: string): string {
   }
 
   return value.slice(start, end);
+}
+
+function findBlobCIDs(obj: object): string[] {
+  const cids: string[] = [];
+  const queue = [obj];
+
+  while (queue.length) {
+    const current = queue.shift();
+    if (!isObject(current)) {
+      continue;
+    }
+
+    if (!isPossiblyBlobRef(current)) {
+      Object.values(current).forEach((val) => queue.push(val));
+      continue;
+    }
+
+    cids.push(current.ref.$link);
+  }
+
+  return cids;
+}
+
+function isPossiblyBlobRef(
+  data: unknown,
+): data is { $type: "blob"; ref: { $link: string } } {
+  if (typeof data !== "object") {
+    return false;
+  }
+
+  if (!data) {
+    return false;
+  }
+
+  const $type = Object.getOwnPropertyDescriptor(data, "$type")?.value;
+  if ($type !== "blob") {
+    return false;
+  }
+
+  const ref = Object.getOwnPropertyDescriptor(data, "ref")?.value;
+  if (!ref) {
+    return false;
+  }
+
+  const $link = Object.getOwnPropertyDescriptor(ref, "$link")?.value;
+  if (typeof $link !== "string") {
+    return false;
+  }
+
+  return true;
 }

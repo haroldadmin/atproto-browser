@@ -38,7 +38,7 @@ export default async function CollectionsPage({
         <BlobsList did={doc.id} pds={pdsUrl} limit={10} />
       </div>
       <Separator className="my-4" />
-      <RawRecord record={doc} />
+      <RawRecord record={doc} did={doc.id} pds={pdsUrl} />
     </div>
   );
 }

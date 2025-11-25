@@ -49,7 +49,7 @@ export default async function RecordPage({
       <RecordWrapper value={record.value} pds={pds} did={did} />
       <Separator className="my-4" />
       {record.cid && <RecordCID cid={record.cid} />}
-      <RawRecord record={record.value} />
+      <RawRecord record={record.value} did={doc.id} pds={pds} />
     </div>
   );
 }
