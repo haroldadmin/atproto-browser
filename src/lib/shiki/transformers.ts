@@ -1,4 +1,5 @@
 import { CID } from "multiformats/cid";
+import { h } from "hastscript";
 import type { ShikiTransformer } from "shiki";
 import { atUriToBrowserUri, createBlobURL } from "../uris";
 import { visit } from "unist-util-visit";
@@ -27,15 +28,14 @@ export const AtUriTransformer: ShikiTransformer = {
       }
 
       parent.children = [
-        {
-          type: "element",
-          tagName: "a",
-          children: [element],
-          properties: {
-            class: "underline-offset-4 text-accent dark:text-foreground",
+        h(
+          "a",
+          {
             href: atUriToBrowserUri(uri),
+            class: "underline-offset-4 text-accent dark:text-foreground",
           },
-        },
+          [element],
+        ),
       ];
     });
   },
@@ -75,15 +75,14 @@ export const DidTransformer: ShikiTransformer = {
       const didUri = `/at/${unquote(element.value)}`;
 
       parent.children = [
-        {
-          type: "element",
-          tagName: "a",
-          children: [element],
-          properties: {
+        h(
+          "a",
+          {
             class: "underline-offset-4 text-accent dark:text-foreground",
             href: didUri,
           },
-        },
+          [element],
+        ),
       ];
     });
   },
@@ -130,16 +129,15 @@ export const BlobLinkTransformer: (
         }
 
         parent.children = [
-          {
-            type: "element",
-            tagName: "a",
-            children: [element],
-            properties: {
+          h(
+            "a",
+            {
               class: "underline-offset-4 text-accent dark:text-foreground",
               target: "_blank",
               href: createBlobURL(CID.parse(value), did, pds).toString(),
             },
-          },
+            [element],
+          ),
         ];
       });
     },
