@@ -3,7 +3,7 @@ import {
   AtUriTransformer,
   BlobLinkTransformer,
   DidTransformer,
-} from "@/lib/uris";
+} from "@/lib/shiki/transformers";
 
 export default async function RawRecord({
   record,
