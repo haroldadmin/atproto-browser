@@ -7,6 +7,8 @@ import { useInView } from "react-intersection-observer";
 import Link from "next/link";
 import LinkSpan from "./link-span";
 import { useGenerator } from "@/hooks/useGenerator";
+import { createBlobURL } from "@/lib/uris";
+import { CID } from "multiformats/cid";
 
 export type BlobsListProps = {
   did: string;
@@ -79,10 +81,7 @@ type BlobListItemProps = {
 };
 
 function BlobListItem({ cid, did, pds }: BlobListItemProps) {
-  const blobUrl = new URL(`/xrpc/com.atproto.sync.getBlob`, pds);
-  blobUrl.searchParams.append("did", did);
-  blobUrl.searchParams.append("cid", cid);
-
+  const blobUrl = createBlobURL(CID.parse(cid), did, pds);
   return (
     <li className="flex flex-row items-center gap-2">
       <div>

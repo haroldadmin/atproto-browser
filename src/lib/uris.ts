@@ -1,5 +1,6 @@
 import { AtUri } from "@atproto/api";
 import { isObject, join } from "lodash";
+import { CID } from "multiformats/cid";
 import type { ShikiTransformer } from "shiki";
 import { visit } from "unist-util-visit";
 
@@ -127,10 +128,6 @@ export const BlobLinkTransformer: (
           return;
         }
 
-        const blobUrl = new URL(`/xrpc/com.atproto.sync.getBlob`, pds);
-        blobUrl.searchParams.append("did", did);
-        blobUrl.searchParams.append("cid", value);
-
         parent.children = [
           {
             type: "element",
@@ -139,7 +136,7 @@ export const BlobLinkTransformer: (
             properties: {
               class: "underline-offset-4 text-accent dark:text-foreground",
               target: "_blank",
-              href: blobUrl.toString(),
+              href: createBlobURL(CID.parse(value), did, pds).toString(),
             },
           },
         ];
@@ -147,6 +144,14 @@ export const BlobLinkTransformer: (
     },
   };
 };
+
+export function createBlobURL(cid: CID, did: string, pds: string): URL {
+  const blobUrl = new URL(`/xrpc/com.atproto.sync.getBlob`, pds);
+  blobUrl.searchParams.append("did", did);
+  blobUrl.searchParams.append("cid", cid.toString());
+
+  return blobUrl;
+}
 
 function parseATURI(value: string): AtUri | undefined {
   try {
