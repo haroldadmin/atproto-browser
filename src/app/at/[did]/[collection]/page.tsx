@@ -1,6 +1,5 @@
 import RecordsList from "@/components/records-list";
 import { cachedResolveDidDoc } from "@/lib/did";
-import { cachedFetchRecords } from "@/lib/records";
 import { getPds } from "@atproto/identity";
 import { notFound } from "next/navigation";
 
@@ -20,23 +19,11 @@ export default async function CollectionPage({
     notFound();
   }
 
-  const result = await cachedFetchRecords({
-    did: doc.id,
-    collection,
-    pds,
-  });
-
-  if (!result) {
-    notFound();
-  }
-
   return (
     <RecordsList
-      initialData={result.records.map((r) => r.uri)}
       did={decodeURIComponent(did)}
       collection={decodeURIComponent(collection)}
       pds={pds}
-      cursor={result.cursor}
     />
   );
 }
