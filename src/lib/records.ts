@@ -22,36 +22,6 @@ async function fetchCollections({ did, pds }: FetchCollectionsParams) {
 
 export const cachedFetchCollections = cache(fetchCollections);
 
-type FetchRecordsParams = {
-  did: string;
-  collection: string;
-  pds: string;
-  cursor?: string;
-};
-
-async function fetchRecords({
-  did,
-  collection,
-  pds,
-  cursor,
-}: FetchRecordsParams) {
-  try {
-    const agent = new Agent(pds);
-    const { data } = await agent.com.atproto.repo.listRecords({
-      repo: did,
-      collection,
-      cursor,
-    });
-
-    return data;
-  } catch (error) {
-    console.error(error);
-    return undefined;
-  }
-}
-
-export const cachedFetchRecords = cache(fetchRecords);
-
 type FetchRecordParams = {
   did: string;
   collection: string;
@@ -98,3 +68,37 @@ async function fetchProfile(did: string, pds: string) {
 }
 
 export const cachedFetchProfile = cache(fetchProfile);
+
+export async function* generateRecords(
+  did: string,
+  collection: string,
+  pds: string,
+  limit = Number.POSITIVE_INFINITY,
+) {
+  const agent = new Agent(pds);
+  const pageSize = Math.min(50, limit);
+
+  let emitted = 0;
+  let cursor: string | undefined;
+
+  while (emitted < limit) {
+    const { data, success } = await agent.com.atproto.repo.listRecords({
+      collection,
+      repo: did,
+      cursor,
+      limit: pageSize,
+    });
+
+    if (!success) {
+      throw new Error(`Failed to list records for ${did} after ${cursor}`);
+    }
+
+    if (!data.records.length) {
+      break;
+    }
+
+    cursor = data.cursor;
+    emitted += data.records.length;
+    yield* data.records;
+  }
+}
