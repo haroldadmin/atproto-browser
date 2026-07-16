@@ -2822,7 +2822,7 @@ __metadata:
     eslint-config-next: "npm:15.5.3"
     hastscript: "npm:^9.0.1"
     lodash: "npm:^4.18.1"
-    lucide-react: "npm:^0.544.0"
+    lucide-react: "npm:^1.24.0"
     multiformats: "npm:^13.4.2"
     next: "npm:15.5.20"
     next-themes: "npm:^0.4.6"
@@ -4947,12 +4947,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.544.0":
-  version: 0.544.0
-  resolution: "lucide-react@npm:0.544.0"
+"lucide-react@npm:^1.24.0":
+  version: 1.24.0
+  resolution: "lucide-react@npm:1.24.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/2503f8cf65e62915997073b6053423bf8091b9470cb397560b417ef2f1628ea162c49e821b787cf153afb86828482d941f051c3f2aa642a1fa58c3de227e0113
+  checksum: 10c0/8bc2a7c6cfa33bfc6df5533cec12454197f9182b98da0dcb79c6f167ca99710d9360e68b4ba7959953b4c501a48a100713e1b047a18c326c955920f72b9207ee
   languageName: node
   linkType: hard
 
