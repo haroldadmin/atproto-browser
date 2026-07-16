@@ -2823,7 +2823,7 @@ __metadata:
     hastscript: "npm:^9.0.1"
     lodash: "npm:^4.18.1"
     lucide-react: "npm:^1.24.0"
-    multiformats: "npm:^13.4.2"
+    multiformats: "npm:^14.0.4"
     next: "npm:15.5.20"
     next-themes: "npm:^0.4.6"
     postcss: "npm:^8.5.19"
@@ -5175,10 +5175,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multiformats@npm:^13.0.0, multiformats@npm:^13.4.2":
+"multiformats@npm:^13.0.0":
   version: 13.4.2
   resolution: "multiformats@npm:13.4.2"
   checksum: 10c0/b7be09b8bf8198d601c8f8c9a358b9a6aca5a14d61239a84f88d8266322e4e7c3015fe7bdf88b589b9993a4abb752defabb932719d1b457a53277e264c4cee11
+  languageName: node
+  linkType: hard
+
+"multiformats@npm:^14.0.4":
+  version: 14.0.4
+  resolution: "multiformats@npm:14.0.4"
+  checksum: 10c0/a12cf867d2732ba1a62eefaada36b229dd23a1f27989adb331bc8a78a685490818542a81b4d913c412dc93c2cce70d632d8839a039dcc3c7c6a5b12c2584b83a
   languageName: node
   linkType: hard
 
