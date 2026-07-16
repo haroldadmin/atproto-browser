@@ -97,8 +97,13 @@ export async function* generateRecords(
       break;
     }
 
+    yield* data.records;
+
+    if (!data.cursor) {
+      break;
+    }
+
     cursor = data.cursor;
     emitted += data.records.length;
-    yield* data.records;
   }
 }
