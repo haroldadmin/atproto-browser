@@ -41,7 +41,7 @@
     "react-hook-form": "^7.62.0",
     "react-intersection-observer": "^9.16.0",
     "tailwind-merge": "^3.6.0",
-    "temporal-polyfill": "^0.3.2",
+    "temporal-polyfill": "^1.0.1",
     "zod": "^3.25.76"
   },
   "devDependencies": {

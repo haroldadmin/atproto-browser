@@ -2835,7 +2835,7 @@ __metadata:
     shiki: "npm:^3.12.2"
     tailwind-merge: "npm:^3.6.0"
     tailwindcss: "npm:^4.3.2"
-    temporal-polyfill: "npm:^0.3.2"
+    temporal-polyfill: "npm:^1.0.1"
     tw-animate-css: "npm:^1.4.0"
     typescript: "npm:^6"
     vitest: "npm:^4.1.2"
@@ -6579,19 +6579,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"temporal-polyfill@npm:^0.3.2":
-  version: 0.3.2
-  resolution: "temporal-polyfill@npm:0.3.2"
+"temporal-polyfill@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "temporal-polyfill@npm:1.0.1"
   dependencies:
-    temporal-spec: "npm:0.3.1"
-  checksum: 10c0/762795c94e1b6cb0574541d0b09f805ff23b0a2c9d0356ab3fc0205e390a3bce73e047de2fdc54c7d149d6e6d781aa1d95aa62afa5de4c83cb79c129b0e502da
+    temporal-spec: "npm:1.0.0"
+    temporal-utils: "npm:1.0.1"
+  checksum: 10c0/a663055293ae334d95e7829508dc5c8b0a11eb8386760b0a5d9cd189c7e013c3b9d010b8e6f33c384ddede532feb506ff44e51f8a6cb00e90a0be6e689fc8947
   languageName: node
   linkType: hard
 
-"temporal-spec@npm:0.3.1":
-  version: 0.3.1
-  resolution: "temporal-spec@npm:0.3.1"
-  checksum: 10c0/e38eae391bd59ae675f1925a65c8ef302933cf9ce98efedaf2e69269e8c36f2b5d486cd3084367f04a6c1ea0289b925690c0df20a73f0c4629b531775924e850
+"temporal-spec@npm:1.0.0":
+  version: 1.0.0
+  resolution: "temporal-spec@npm:1.0.0"
+  checksum: 10c0/16f24e418ed8f58f094752df2698db29153afed7f36cbbe5a889127ff86479a7f3e7338ed1480e3a96834f9613b55dbe45c74ac46a5a7fd1366ffb1f923e3338
+  languageName: node
+  linkType: hard
+
+"temporal-utils@npm:1.0.1":
+  version: 1.0.1
+  resolution: "temporal-utils@npm:1.0.1"
+  checksum: 10c0/cf229258c81f8283513ef7626f8089e23fb346d53b48d1c37581a11ca621ce4b65f3e0798565fa6f3c4fb48562202634adb343648350caad2e349eeae083d00b
   languageName: node
   linkType: hard
 
