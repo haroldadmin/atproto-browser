@@ -13,10 +13,10 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@atproto/api": "^0.16.11",
-    "@atproto/crypto": "^0.4.5",
-    "@atproto/identity": "^0.4.12",
-    "@atproto/oauth-client": "^0.5.14",
+    "@atproto/api": "^0.20.29",
+    "@atproto/crypto": "^0.5.4",
+    "@atproto/identity": "^0.5.6",
+    "@atproto/oauth-client": "^0.7.11",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-dialog": "^1.1.15",
