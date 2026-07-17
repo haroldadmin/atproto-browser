@@ -1,4 +1,4 @@
-import { IdResolver, MemoryCache } from "@atproto/identity";
+import { DidDocument, IdResolver, MemoryCache } from "@atproto/identity";
 import { cache } from "react";
 
 const oneHourMillis = 1 * 60 * 60 * 1000;
@@ -8,7 +8,19 @@ const resolver = new IdResolver({
   didCache: new MemoryCache(oneHourMillis, oneDayMillis),
 });
 
-export async function resolveDidDoc(str: string) {
+/**
+ * Resolves the given handle or DID to a DID document.
+ *
+ * If given a handle, resolves the handle to a DID first using DNS
+ * resolution (TXT query to the _atproto.<handle> domain).
+ *
+ * Once a DID has been resolved, it fetches the corresponding DID
+ * document from plc.directory (for did:plc) or from the well-known
+ * DID endpoint (/well-known/did.json, for did:web).
+ */
+export async function resolveDidDoc(
+  str: string,
+): Promise<DidDocument | undefined> {
   const resolvedDid = !isValidDid(str)
     ? await resolver.handle.resolve(str)
     : str;
@@ -17,12 +29,13 @@ export async function resolveDidDoc(str: string) {
     return undefined;
   }
 
-  const doc = await resolver.did.resolve(resolvedDid);
-  if (!doc) {
+  try {
+    const doc = await resolver.did.resolve(resolvedDid);
+    return doc ?? undefined;
+  } catch (error) {
+    console.error(error);
     return undefined;
   }
-
-  return doc;
 }
 
 export const cachedResolveDidDoc = cache(resolveDidDoc);
