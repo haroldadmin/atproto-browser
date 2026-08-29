@@ -27,7 +27,7 @@ async function actionReducer(
   if (!res.ok) {
     return {
       state: "error",
-      error: `Failed to trigger OAuth flow: ${res.statusText}`,
+      error: `Failed to trigger OAuth flow`,
     };
   }
 
