@@ -24,7 +24,7 @@ export default function AccountMenu({ did }: AccountMenuProps) {
   const [logout, isLoggingOut] = useLogout();
 
   const onViewRepo = useCallback(() => {
-    router.push(`/at/${did}`);
+    router.push(`/at/${did.id}`);
   }, [router, did]);
 
   const handle = did.alsoKnownAs?.[0]?.replace("at://", "");
