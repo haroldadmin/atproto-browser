@@ -12,11 +12,13 @@ import type {
 import {
   resolveOauthPrivateKey,
   resolveSiteUrl,
+  resolveSiteUrlScheme,
   resolveVercelEnv,
 } from "@/lib/env";
 import { authDb } from "./database";
 
 export const SCOPE = "atproto";
+const SITE_URL = `${resolveSiteUrlScheme()}${resolveSiteUrl()}`;
 
 let client: NodeOAuthClient | null = null;
 
@@ -37,10 +39,11 @@ export function buildClientMetadata(): OAuthClientMetadataInput {
       `https://${siteUrl}`,
     ).toString(),
     client_name: "atproto-browser.dev",
-    client_uri: `https://${siteUrl}`,
+    client_uri: SITE_URL,
     redirect_uris: [
       new URL("/oauth/callback", `https://${siteUrl}`).toString(),
     ],
+    logo_uri: `${SITE_URL}/atproto-browser.svg`,
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],
     scope: SCOPE,
