@@ -51,7 +51,7 @@ export function resolveSiteUrl(): string {
     case "production":
       return "www.atproto-browser.dev";
     case "preview":
-      return envOrThrow("NEXT_PUBLIC_VERCEL_URL");
+      return envOrThrow("VERCEL_URL");
     case "development":
     default:
       return "127.0.0.1:3000";
