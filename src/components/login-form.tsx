@@ -66,7 +66,7 @@ export default function LoginForm() {
             name="handle"
             type="text"
             minLength={1}
-            placeholder="@username.bsky.social"
+            placeholder="Bluesky handle or DID"
             disabled={isPending}
           />
           <Button
