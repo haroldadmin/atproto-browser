@@ -8,6 +8,10 @@ import Link from "next/link";
 import Script from "next/script";
 import logo from "../../public/atproto-browser.svg";
 import ogCard from "../../public/og-card.png";
+import SessionState from "@/components/session-state";
+import { resolveSiteUrl, resolveSiteUrlScheme } from "@/lib/env";
+
+const url = `${resolveSiteUrlScheme()}${resolveSiteUrl()}`;
 
 export const metadata: Metadata = {
   title: {
@@ -21,7 +25,7 @@ export const metadata: Metadata = {
     description: "Experimental browser for the Atmosphere",
     siteName: "ATProto Browser",
     images: [ogCard.src],
-    url: "https://www.atproto-browser.dev",
+    url,
   },
   twitter: {
     title: "ATProto Browser",
@@ -31,11 +35,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: "https://www.atproto-browser.dev",
+    canonical: url,
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -59,25 +63,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <header className="px-4 py-8 lg:px-16">
-            <div className="flex items-center gap-4">
-              <Link href="/">
-                <Image
-                  src={logo}
-                  width={52}
-                  height={52}
-                  alt="ATProto Browser"
-                />
-              </Link>
-              <div>
-                <Link href="/">
-                  <h1 className="text-2xl md:text-4xl font-bold">
-                    ATProto Browser
-                  </h1>
-                </Link>
-                <p className="md:text-lg text-gray-600 dark:text-gray-300">
-                  Experimental browser for the Atmosphere
-                </p>
-              </div>
+            <div className="flex flex-row justify-between">
+              <Title />
+              <SessionState />
             </div>
           </header>
           <div className="px-4 lg:px-16 grow">{children}</div>
@@ -85,5 +73,23 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
+  );
+}
+
+function Title() {
+  return (
+    <div className="flex items-center gap-4">
+      <Link href="/">
+        <Image src={logo} width={52} height={52} alt="ATProto Browser" />
+      </Link>
+      <div>
+        <Link href="/">
+          <h1 className="text-xl md:text-4xl font-bold">ATProto Browser</h1>
+        </Link>
+        <p className="text-sm md:text-lg text-gray-600 dark:text-gray-300">
+          Experimental browser for the Atmosphere
+        </p>
+      </div>
+    </div>
   );
 }
