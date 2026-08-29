@@ -18,14 +18,6 @@ import { authDb } from "./database";
 
 export const SCOPE = "atproto";
 
-const globalAuth = globalThis as unknown as {
-  stateStore: Map<string, NodeSavedState>;
-  sessionStore: Map<string, NodeSavedSession>;
-};
-
-globalAuth.stateStore ??= new Map();
-globalAuth.sessionStore ??= new Map();
-
 let client: NodeOAuthClient | null = null;
 
 export function buildClientMetadata(): OAuthClientMetadataInput {
