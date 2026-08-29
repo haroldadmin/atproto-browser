@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeAll } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { resolveDidDoc } from "./did";
 import type { DidDocument } from "@atproto/identity";
 import { beforeEach } from "node:test";
