@@ -14,6 +14,7 @@ import {
   resolveSiteUrl,
   resolveVercelEnv,
 } from "@/lib/env";
+import { authDb } from "./database";
 
 export const SCOPE = "atproto";
 
@@ -80,26 +81,60 @@ export async function getOAuthClient(): Promise<NodeOAuthClient> {
     clientMetadata: buildClientMetadata(),
     keyset: await buildKeyset(),
     stateStore: {
-      async get(key: string) {
-        return globalAuth.stateStore.get(key);
+      get: async (key: string) => {
+        const row = await authDb()
+          .selectFrom("auth_state")
+          .select("value")
+          .where("key", "=", key)
+          .executeTakeFirst();
+
+        if (!row) {
+          return undefined;
+        }
+
+        return JSON.parse(row.value);
       },
-      async set(key: string, value: NodeSavedState) {
-        globalAuth.stateStore.set(key, value);
+      set: async (key: string, value: NodeSavedState) => {
+        const valueJson = JSON.stringify(value);
+        await authDb()
+          .insertInto("auth_state")
+          .values({ key, value: valueJson })
+          .onConflict((oc) =>
+            oc.column("key").doUpdateSet({ value: valueJson }),
+          )
+          .execute();
       },
-      async del(key: string) {
-        globalAuth.stateStore.delete(key);
+      del: async (key: string) => {
+        await authDb()
+          .deleteFrom("auth_state")
+          .where("key", "=", key)
+          .execute();
       },
     },
-
     sessionStore: {
-      async get(key: string) {
-        return globalAuth.sessionStore.get(key);
+      get: async (key: string) => {
+        const row = await authDb()
+          .selectFrom("auth_session")
+          .select("value")
+          .where("key", "=", key)
+          .executeTakeFirst();
+        return row ? JSON.parse(row.value) : undefined;
       },
-      async set(key: string, value: NodeSavedSession) {
-        globalAuth.sessionStore.set(key, value);
+      set: async (key: string, value: NodeSavedSession) => {
+        const valueJson = JSON.stringify(value);
+        await authDb()
+          .insertInto("auth_session")
+          .values({ key, value: valueJson })
+          .onConflict((oc) =>
+            oc.column("key").doUpdateSet({ value: valueJson }),
+          )
+          .execute();
       },
-      async del(key: string) {
-        globalAuth.sessionStore.delete(key);
+      del: async (key: string) => {
+        await authDb()
+          .deleteFrom("auth_session")
+          .where("key", "=", key)
+          .execute();
       },
     },
   });

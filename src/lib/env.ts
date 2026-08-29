@@ -3,7 +3,7 @@ function env(name: string): string | undefined {
   return value;
 }
 
-function envOrThrow(name: string): string {
+export function envOrThrow(name: string): string {
   const value = env(name);
   if (value === undefined) {
     throw new Error(`Environment variable ${name} is not defined`);
