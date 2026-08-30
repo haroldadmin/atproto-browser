@@ -4,7 +4,6 @@ import BlueskyFollowRecord from "@/components/records/bluesky-follow";
 import BlueskyLikeRecord from "@/components/records/bluesky-like";
 import BlueskyPostRecord from "@/components/records/bluesky-post";
 import BlueskyProfileRecord from "@/components/records/bluesky-profile";
-import { Separator } from "@/components/ui/separator";
 import { cachedResolveDidDoc } from "@/lib/did";
 import { cachedFetchRecord } from "@/lib/records";
 import {
@@ -14,6 +13,7 @@ import {
   AppBskyGraphFollow,
 } from "@atproto/api";
 import { getPds } from "@atproto/identity";
+import clsx from "clsx";
 import { notFound } from "next/navigation";
 
 export default async function RecordPage({
@@ -44,25 +44,20 @@ export default async function RecordPage({
     notFound();
   }
 
+  const wrapped = RecordWrapper(record.value, pds, did);
+
   return (
-    <div>
-      <RecordWrapper value={record.value} pds={pds} did={did} />
-      <Separator className="my-4" />
-      {record.cid && <RecordCID cid={record.cid} />}
-      <RawRecord record={record.value} did={doc.id} pds={pds} />
+    <div className="flex flex-col md:flex-row flex-wrap md:flex-nowrap gap-x-8 gap-y-4">
+      {wrapped && <div className="flex-1">{wrapped}</div>}
+      <div className="grow">
+        {record.cid && <RecordCID cid={record.cid} />}
+        <RawRecord record={record.value} did={doc.id} pds={pds} />
+      </div>
     </div>
   );
 }
 
-function RecordWrapper({
-  value,
-  pds,
-  did,
-}: {
-  value: unknown;
-  pds: string;
-  did: string;
-}) {
+function RecordWrapper(value: unknown, pds: string, did: string) {
   if (AppBskyGraphFollow.isRecord(value)) {
     const validation = AppBskyGraphFollow.validateRecord(value);
     if (!validation.success) {
