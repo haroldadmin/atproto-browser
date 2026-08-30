@@ -27,7 +27,7 @@ export default async function RawRecord({
 
   return (
     <div
-      className="prose dark:prose-invert max-w-full"
+      className="font-mono text-sm"
       dangerouslySetInnerHTML={{ __html: highlightedHtml }}
     />
   );
