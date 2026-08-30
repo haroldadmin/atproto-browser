@@ -1,9 +1,9 @@
-import RawRecord from "@/components/raw-record";
-import RecordCID from "@/components/record-cid";
+import RecordMetadata from "@/components/record-metadata";
 import BlueskyFollowRecord from "@/components/records/bluesky-follow";
 import BlueskyLikeRecord from "@/components/records/bluesky-like";
 import BlueskyPostRecord from "@/components/records/bluesky-post";
 import BlueskyProfileRecord from "@/components/records/bluesky-profile";
+import RecordViewer from "@/components/record-viewer";
 import { cachedResolveDidDoc } from "@/lib/did";
 import { cachedFetchRecord } from "@/lib/records";
 import {
@@ -43,20 +43,39 @@ export default async function RecordPage({
     notFound();
   }
 
-  const wrapped = RecordWrapper(record.value, pds, did);
-
   return (
-    <div className="flex flex-col md:flex-row flex-wrap md:flex-nowrap gap-x-8 gap-y-4">
-      {wrapped && <div className="flex-1">{wrapped}</div>}
-      <div className="grow">
-        {record.cid && <RecordCID cid={record.cid} />}
-        <RawRecord record={record.value} did={doc.id} pds={pds} />
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-x-8 md:gap-x-16 gap-y-8">
+      <div className="col-span-1 md:col-span-2 space-y-8">
+        <RecordMetadata
+          did={doc.id}
+          pds={pds}
+          cid={record.cid}
+          record={record.value}
+        />
+        <RecordWrapper did={did} pds={pds} value={record.value} />
+      </div>
+      <div className="col-span-1 md:col-span-3">
+        <RecordViewer
+          pds={pds}
+          did={doc.id}
+          collection={collection}
+          rkey={rkey}
+          record={record.value}
+        />
       </div>
     </div>
   );
 }
 
-function RecordWrapper(value: unknown, pds: string, did: string) {
+function RecordWrapper({
+  did,
+  pds,
+  value,
+}: {
+  value: unknown;
+  pds: string;
+  did: string;
+}) {
   if (AppBskyGraphFollow.isRecord(value)) {
     const validation = AppBskyGraphFollow.validateRecord(value);
     if (!validation.success) {

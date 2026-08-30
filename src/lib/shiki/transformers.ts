@@ -32,7 +32,7 @@ export const AtUriTransformer: ShikiTransformer = {
           "a",
           {
             href: atUriToBrowserUri(uri),
-            class: "underline-offset-4 text-accent dark:text-foreground",
+            class: "underline underline-offset-4",
           },
           [element],
         ),
@@ -78,7 +78,7 @@ export const DidTransformer: ShikiTransformer = {
         h(
           "a",
           {
-            class: "underline-offset-4 text-accent dark:text-foreground",
+            class: "underline underline-offset-4",
             href: didUri,
           },
           [element],
@@ -132,7 +132,7 @@ export const BlobLinkTransformer: (
           h(
             "a",
             {
-              class: "underline-offset-4 text-accent dark:text-foreground",
+              class: "underline underline-offset-4",
               target: "_blank",
               href: createBlobURL(CID.parse(value), did, pds).toString(),
             },
@@ -174,7 +174,7 @@ function unquote(value: string): string {
   return value.slice(start, end);
 }
 
-function findBlobCIDs(obj: object): string[] {
+export function findBlobCIDs(obj: object): string[] {
   const cids: string[] = [];
   const queue = [obj];
 
