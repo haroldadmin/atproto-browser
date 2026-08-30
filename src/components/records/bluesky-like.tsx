@@ -17,11 +17,13 @@ export default function BlueskyLikeRecord({
   const browserUri = atUriToBrowserUri(subjectUri);
 
   return (
-    <div className="space-y-4">
-      Liked{" "}
-      <Link href={browserUri}>
-        <LinkSpan>{subjectUri.rkey}</LinkSpan>
-      </Link>
+    <div>
+      <p className="mb-4">
+        Liked{" "}
+        <Link href={browserUri}>
+          <LinkSpan>{subjectUri.rkey}</LinkSpan>
+        </Link>
+      </p>
       <Suspense fallback={<p>Loading post...</p>}>
         <EmbeddedPost uri={subjectUri} pds={pds} />
       </Suspense>
