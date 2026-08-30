@@ -43,7 +43,7 @@ export function buildClientMetadata(): OAuthClientMetadataInput {
     redirect_uris: [
       new URL("/oauth/callback", `https://${siteUrl}`).toString(),
     ],
-    logo_uri: `${SITE_URL}/atproto-browser.svg`,
+    logo_uri: `${SITE_URL}/favicon.ico`,
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],
     scope: SCOPE,
