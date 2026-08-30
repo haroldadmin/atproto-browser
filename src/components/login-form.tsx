@@ -80,6 +80,7 @@ export default function LoginForm() {
                       placeholder="Bluesky handle or DID"
                       disabled={formState.isSubmitting}
                       spellCheck={false}
+                      autoFocus
                       autoCapitalize="none"
                       autoComplete="username"
                     />
