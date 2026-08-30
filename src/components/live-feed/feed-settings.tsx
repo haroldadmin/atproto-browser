@@ -11,6 +11,7 @@ import {
   Sheet,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -39,7 +40,7 @@ export default function FeedSettings() {
             Adjust settings for the live feed
           </SheetDescription>
         </SheetHeader>
-        <div className="space-y-8 my-8">
+        <div className="space-y-8 p-4">
           <div>
             <Label htmlFor="samplingRate">Sampling rate</Label>
             <p className="text-[0.8rem] text-muted-foreground">
@@ -116,23 +117,25 @@ export default function FeedSettings() {
           </div>
           <Separator />
         </div>
-        <div className="prose dark:prose-invert">
-          <p className="text-sm">
-            The Live feed is a real time stream of posts from the Bluesky
-            network, built on top of{" "}
-            <Link
-              href="https://github.com/bluesky-social/jetstream"
-              target="_blank"
-            >
-              <LinkSpan>Jetstream</LinkSpan>
-            </Link>
-            .
-          </p>
-          <p className="text-sm">
-            Jetstream produces hundreds of updates every second. Sampling is
-            required to keep things manageable.
-          </p>
-        </div>
+        <SheetFooter>
+          <div className="text-muted-foreground">
+            <p className="text-sm">
+              The Live feed is a real time stream of posts from the Bluesky
+              network, built on top of{" "}
+              <Link
+                href="https://github.com/bluesky-social/jetstream"
+                target="_blank"
+              >
+                <LinkSpan>Jetstream</LinkSpan>
+              </Link>
+              .
+            </p>
+            <p className="text-sm mt-2">
+              Jetstream produces hundreds of updates every second. Sampling is
+              required to keep things manageable.
+            </p>
+          </div>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );
