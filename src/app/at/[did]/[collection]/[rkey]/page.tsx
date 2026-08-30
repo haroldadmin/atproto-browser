@@ -13,7 +13,6 @@ import {
   AppBskyGraphFollow,
 } from "@atproto/api";
 import { getPds } from "@atproto/identity";
-import clsx from "clsx";
 import { notFound } from "next/navigation";
 
 export default async function RecordPage({
