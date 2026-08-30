@@ -1,94 +1,119 @@
 "use client";
 
-import { useActionState, useCallback } from "react";
-import { Label } from "@/components/ui/label";
+import { useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+import { FormProvider, useForm } from "react-hook-form";
+import { LoaderCircleIcon } from "lucide-react";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 
-type FormState =
-  | { state: "idle" }
-  | {
-      state: "error";
-      error: string;
-    }
-  | { state: "success" };
+type LoginForm = {
+  handle: string;
+};
 
-async function actionReducer(
-  _state: FormState,
-  handle: string,
-): Promise<FormState> {
-  const res = await fetch("/oauth/login", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ handle }),
-  });
-
-  if (!res.ok) {
-    return {
-      state: "error",
-      error: `Failed to trigger OAuth flow`,
-    };
-  }
-
-  const resBody = await res.json();
-  window.location.assign(resBody.redirectUrl);
-
-  return { state: "success" };
-}
 export default function LoginForm() {
-  const [form, dispatch, isPending] = useActionState(actionReducer, {
-    state: "idle",
+  const form = useForm<LoginForm>({
+    defaultValues: { handle: "" },
   });
 
-  const formAction = useCallback(
-    async (formData: FormData) => {
-      const handle = formData.get("handle");
-      if (!handle || typeof handle !== "string") {
+  const { control, formState, handleSubmit, setError } = form;
+
+  const onSubmit = useCallback(
+    async (form: LoginForm) => {
+      const { handle } = form;
+
+      const res = await fetch("/oauth/login", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ handle }),
+      });
+
+      if (!res.ok) {
+        setError("root", { message: "Failed to trigger OAuth flow" });
         return;
       }
 
-      dispatch(handle);
+      const resBody = await res.json();
+      if (!resBody.redirectUrl) {
+        setError("root", {
+          message: "Authorization server did not return a redirect URL",
+        });
+        return;
+      }
+
+      window.location.assign(resBody.redirectUrl);
     },
-    [dispatch],
+    [setError],
   );
 
   return (
     <div className="max-w-lg">
-      <form action={formAction}>
-        <div className="flex flex-col">
-          <Label htmlFor="handle" className="mb-1">
-            <span className="font-bold">Handle</span>
-          </Label>
-          <p className="text-sm mb-4">Enter your ATProto handle to continue</p>
-          <Input
-            id="handle"
-            name="handle"
-            type="text"
-            minLength={1}
-            placeholder="Bluesky handle or DID"
-            disabled={isPending}
-          />
-          <Button
-            className="mt-4"
-            type="submit"
-            variant="outline"
-            disabled={isPending}
-          >
-            Continue
-          </Button>
-          {form.state == "error" && (
-            <Alert variant="destructive" className="mt-4">
-              <AlertTitle className="text-red-500">
-                Something went wrong
-              </AlertTitle>
-              <AlertDescription className="text-red-500">
-                {form.error}
-              </AlertDescription>
-            </Alert>
-          )}
-        </div>
-      </form>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <div className="flex flex-col">
+            <FormField
+              name="handle"
+              control={control}
+              rules={{
+                minLength: { value: 1, message: "Handle can not be empty" },
+                required: { value: true, message: "Handle is required" },
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <span className="font-bold">Handle</span>
+                  </FormLabel>
+                  <FormDescription>
+                    Enter your ATProto handle to continue
+                  </FormDescription>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      placeholder="Bluesky handle or DID"
+                      disabled={formState.isSubmitting}
+                      spellCheck={false}
+                      autoCapitalize="none"
+                      autoComplete="username"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              className="mt-4"
+              type="submit"
+              variant="outline"
+              disabled={formState.isSubmitting}
+            >
+              {formState.isSubmitting && (
+                <LoaderCircleIcon className="animate-spin" />
+              )}
+              Continue
+            </Button>
+            {formState.errors.root && (
+              <p
+                role="alert"
+                className="mt-4 text-sm font-medium text-destructive"
+              >
+                {formState.errors.root.message}
+              </p>
+            )}
+            {/* Live region change for accessibility, announces to non-sighted users about changes in the form*/}
+            <p role="status" className="sr-only">
+              {formState.isSubmitting ? "Signing you in…" : ""}
+            </p>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   );
 }
