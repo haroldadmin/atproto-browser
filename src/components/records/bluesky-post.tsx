@@ -9,7 +9,7 @@ import { cachedFetchRecord } from "@/lib/records";
 import { atUriToBrowserUri } from "@/lib/uris";
 import { AppBskyFeedPost, AtUri } from "@atproto/api";
 import { AccordionItem } from "@radix-ui/react-accordion";
-import { Info, Reply } from "lucide-react";
+import { InfoIcon, ReplyIcon } from "lucide-react";
 import Link from "next/link";
 import { use } from "react";
 import LinkSpan from "../link-span";
@@ -62,7 +62,7 @@ function ReplyParent({
       <Alert className="my-4">
         <AlertTitle>
           <div className="flex flex-row items-center gap-2">
-            <Info className="h-3 w-3" />
+            <InfoIcon className="h-3 w-3" />
             More replies available
           </div>
         </AlertTitle>
@@ -123,7 +123,7 @@ function ReplyParent({
       <AccordionItem value={post.uri}>
         <AccordionTrigger>
           <p className="flex flex-row items-center gap-1 text-muted-foreground">
-            <Reply className="h-3 w-3" />
+            <ReplyIcon className="h-3 w-3" />
             <span>In reply to </span>
             <Link href={atUriToBrowserUri(atUri)}>
               <LinkSpan>{atUri.rkey}</LinkSpan>

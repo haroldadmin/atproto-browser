@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { ListFilter } from "lucide-react";
+import { ListFilterIcon } from "lucide-react";
 import { useContext } from "react";
 import { FeedContext } from "./feed-context";
 import clsx from "clsx";
@@ -11,7 +11,7 @@ export default function FeedFilter() {
 
   return (
     <div className="relative my-4">
-      <ListFilter
+      <ListFilterIcon
         className={clsx(
           "absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4",
           settings.filterQuery && "text-blue-500",

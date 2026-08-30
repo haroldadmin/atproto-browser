@@ -9,7 +9,7 @@ import {
 import { findBlobCIDs } from "@/lib/shiki/transformers";
 import { createBlobURL } from "@/lib/uris";
 import { lexToJson } from "@atproto/api";
-import { ExternalLink } from "lucide-react";
+import { ExternalLinkIcon } from "lucide-react";
 import { CID } from "multiformats";
 import Link from "next/link";
 
@@ -59,7 +59,7 @@ export default function RecordMetadata({
                   href={cidInspectionUrl(cid).toString()}
                 >
                   <div className="flex flex-row items-center gap-2">
-                    <ExternalLink className="size-3" />
+                    <ExternalLinkIcon className="size-3" />
                     <p className="font-mono text-sm underline">{cid}</p>
                   </div>
                 </Link>
@@ -124,7 +124,7 @@ function BlobsList({
               referrerPolicy="no-referrer"
             >
               <div className="flex flex-row items-center gap-2">
-                <ExternalLink className="size-3" />
+                <ExternalLinkIcon className="size-3" />
                 <span className="underline underline-offset-4">{cid}</span>
               </div>
             </Link>

@@ -6,7 +6,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import clsx from "clsx";
-import { ExternalLink } from "lucide-react";
+import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -57,7 +57,7 @@ function NavigationLink({
         )}
       >
         {children}
-        {isExternal && <ExternalLink className="w-4 h-4" />}
+        {isExternal && <ExternalLinkIcon className="w-4 h-4" />}
       </p>
     </Link>
   );

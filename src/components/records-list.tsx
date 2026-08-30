@@ -2,7 +2,7 @@
 
 import { atUriToBrowserUri } from "@/lib/uris";
 import { AtUri } from "@atproto/api";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
@@ -46,7 +46,7 @@ export default function RecordsList({
         {records.map((record) => (
           <RecordItem key={record.cid} recordUri={record.uri} />
         ))}
-        {hasMore && <LoaderCircle ref={ref} className="animate-spin" />}
+        {hasMore && <LoaderCircleIcon ref={ref} className="animate-spin" />}
       </ul>
       {!hasMore && (
         <p className="text-sm text-gray-500 mt-4">No more records</p>

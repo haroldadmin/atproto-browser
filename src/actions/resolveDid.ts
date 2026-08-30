@@ -27,7 +27,7 @@ export async function fetchDidDoc(
   if (!parsed.success) {
     return {
       ...prevState,
-      error: parsed.error.errors[0]?.message,
+      error: parsed.error.issues[0]?.message,
     };
   }
 

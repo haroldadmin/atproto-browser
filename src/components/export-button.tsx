@@ -1,4 +1,4 @@
-import { Download } from "lucide-react";
+import { DownloadIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 
@@ -14,7 +14,7 @@ export default function ExportButton({ did, pds }: ExportButtonProps) {
   return (
     <Link href={exportUrl.toString()} target="_blank">
       <Button variant="ghost">
-        <Download />
+        <DownloadIcon />
         Export
       </Button>
     </Link>

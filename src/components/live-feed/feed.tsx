@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import clsx from "clsx";
 import { range } from "lodash";
-import { Radio } from "lucide-react";
+import { RadioIcon } from "lucide-react";
 import { useContext } from "react";
 import FeedProvider, { FeedContext } from "./feed-context";
 import FeedFilter from "./feed-filter";
@@ -31,7 +31,7 @@ function FeedHeader() {
   return (
     <div className="flex flex-row gap-2 items-center">
       <button onClick={() => setActive(!settings.active)}>
-        <Radio
+        <RadioIcon
           aria-label={settings.active ? "Pause" : "Resume"}
           className={clsx(
             !settings.active && "text-gray-300",

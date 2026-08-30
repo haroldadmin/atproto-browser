@@ -1,9 +1,15 @@
 import { z } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 import { getOAuthClient, SCOPE } from "@/lib/auth/client";
+import { isValidDid, isValidHandle } from "@atproto/syntax";
 
 const RequestBodySchema = z.object({
-  handle: z.string().nonempty(),
+  handle: z
+    .string()
+    .min(1)
+    .refine((value) => {
+      return isValidDid(value) || isValidHandle(value);
+    }, "Must be a valid DID or handle"),
 });
 
 export async function POST(request: NextRequest) {

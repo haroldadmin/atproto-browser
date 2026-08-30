@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DidDocument } from "@atproto/identity";
-import { Fingerprint } from "lucide-react";
+import { FingerprintIcon } from "lucide-react";
 import Multikey from "./multikey";
 
 export default function DIDDocument({
@@ -32,7 +32,7 @@ export default function DIDDocument({
                 key={identity}
                 className="flex flex-row items-center gap-2 mt-2"
               >
-                <Fingerprint className="w-4 h-4" />
+                <FingerprintIcon className="w-4 h-4" />
                 <p className="font-mono">{identity}</p>
               </li>
             ))}
