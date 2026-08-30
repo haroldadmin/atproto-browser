@@ -1,6 +1,7 @@
 "use client";
 
 import { UserIcon } from "lucide-react";
+import { getHandle } from "@atproto/common-web";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -27,14 +28,16 @@ export default function AccountMenu({ did }: AccountMenuProps) {
     router.push(`/at/${did.id}`);
   }, [router, did]);
 
-  const handle = did.alsoKnownAs?.[0]?.replace("at://", "");
+  const handle = getHandle(did);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" disabled={isLoggingOut}>
           {handle ? (
-            <span className="font-semibold">@{handle}</span>
+            <span className="text-sm md:text-base font-semibold max-w-20 truncate">
+              @{handle}
+            </span>
           ) : (
             <>
               <UserIcon className="size-4" />
@@ -43,7 +46,7 @@ export default function AccountMenu({ did }: AccountMenuProps) {
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
+      <DropdownMenuContent>
         <DropdownMenuItem onClick={onViewRepo}>
           View repository
         </DropdownMenuItem>
