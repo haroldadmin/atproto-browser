@@ -1,4 +1,5 @@
 import { DidDocument, IdResolver, MemoryCache } from "@atproto/identity";
+import { isValidDid } from "@atproto/syntax";
 import { cache } from "react";
 
 const oneHourMillis = 1 * 60 * 60 * 1000;
@@ -59,22 +60,4 @@ function resolveToParts(did: string): DidParts | undefined {
     method,
     id,
   };
-}
-
-function isValidDid(str: string): boolean {
-  const parts = resolveToParts(str);
-  if (!parts) {
-    return false;
-  }
-
-  const { prefix, method } = parts;
-  if (prefix !== "did") {
-    return false;
-  }
-
-  if (method !== "web" && method !== "plc") {
-    return false;
-  }
-
-  return true;
 }

@@ -7,10 +7,11 @@ import { clsx } from "clsx";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { Label } from "./ui/label";
+import { DidString, HandleString } from "@atproto/syntax";
 
 export default function DIDForm() {
   const [formState, formAction] = useActionState(fetchDidDoc, {
-    did: "",
+    did: "" as DidString | HandleString,
   });
 
   return (

@@ -3073,6 +3073,7 @@ __metadata:
     "@atproto/identity": "npm:^0.5.9"
     "@atproto/oauth-client": "npm:^0.8.3"
     "@atproto/oauth-client-node": "npm:^0.5.3"
+    "@atproto/syntax": "npm:^0.7.4"
     "@hookform/resolvers": "npm:^3.9.1"
     "@radix-ui/react-accordion": "npm:^1.2.16"
     "@radix-ui/react-dialog": "npm:^1.1.19"
