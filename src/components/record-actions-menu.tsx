@@ -7,10 +7,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useCallback } from "react";
+import { useCallback, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";
+import { deleteRecordAction } from "@/actions/deleteRecord";
 
 export type RecordActionsMenuProps = {
   pds: string;
@@ -29,6 +30,8 @@ export function RecordActionsMenu({
   record,
   cid,
 }: RecordActionsMenuProps) {
+  const [isDeleting, startDeleteRecord] = useTransition();
+
   const onCopy = useCallback(async () => {
     const recordText = JSON.stringify(record, null, 2);
     await window.navigator.clipboard.write([
@@ -55,6 +58,14 @@ export function RecordActionsMenu({
           >
             Download
           </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          disabled={isDeleting}
+          onClick={() => {
+            startDeleteRecord(() => deleteRecordAction(collection, rkey));
+          }}
+        >
+          <span className="text-destructive">Delete</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
