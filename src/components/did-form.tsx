@@ -17,7 +17,7 @@ export default function DIDForm() {
     <form action={formAction} className="max-w-lg py-24">
       <div className="flex flex-col gap-3 w-full">
         <Label htmlFor="did">
-          <h2 className="text-xl font-bold ml-1.5">DID or a Bluesky handle</h2>
+          <h2 className="text-xl font-bold ml-1.5">Explore a repository</h2>
         </Label>
         <div className="flex flex-row gap-2 items-center">
           <Input
