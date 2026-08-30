@@ -35,7 +35,7 @@ export default function AccountMenu({ did }: AccountMenuProps) {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" disabled={isLoggingOut}>
           {handle ? (
-            <span className="text-sm md:text-base font-semibold max-w-20 truncate">
+            <span className="text-sm md:text-base font-semibold max-w-20 md:max-w-full truncate">
               @{handle}
             </span>
           ) : (
