@@ -75,21 +75,23 @@ export function RecordActionsMenu({
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
         {sessionDid !== undefined && (
-          <DropdownMenuGroup>
-            <DropdownMenuItem
-              variant="destructive"
-              disabled={did !== sessionDid}
-              onSelect={(e) => e.preventDefault()}
-            >
-              <DeleteRecordDialog
-                did={did}
-                collection={collection}
-                rkey={rkey}
-              />
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                variant="destructive"
+                disabled={did !== sessionDid}
+                onSelect={(e) => e.preventDefault()}
+              >
+                <DeleteRecordDialog
+                  did={did}
+                  collection={collection}
+                  rkey={rkey}
+                />
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
