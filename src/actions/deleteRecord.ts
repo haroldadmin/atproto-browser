@@ -5,31 +5,25 @@ import { Agent } from "@atproto/api";
 import { redirect } from "next/navigation";
 
 export async function deleteRecordAction(
+  repo: string,
   collection: string,
   rkey: string,
 ): Promise<void> {
   const session = await getSession();
   if (!session) {
-    return;
+    throw new Error("No active auth session available");
+  }
+
+  if (session.did !== repo) {
+    throw new Error("Can not delete records in a different repo");
   }
 
   const agent = new Agent(session);
-
-  let deleted = false;
-  try {
-    await agent.com.atproto.repo.deleteRecord({
-      repo: session.did,
-      collection,
-      rkey,
-    });
-    deleted = true;
-  } catch (error) {
-    console.error("Failed to delete record", error);
-  }
-
-  if (!deleted) {
-    return;
-  }
+  await agent.com.atproto.repo.deleteRecord({
+    repo: session.did,
+    collection,
+    rkey,
+  });
 
   redirect(`/at/${session.did}/${collection}`);
 }

@@ -1,10 +1,14 @@
 "use client";
 
+import { toast } from "sonner";
 import type { JsonValue } from "@atproto/lex-json";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCallback, useTransition } from "react";
@@ -20,6 +24,7 @@ export type RecordActionsMenuProps = {
   rkey: string;
   cid?: string;
   record: JsonValue;
+  sessionDid?: string;
 };
 
 export function RecordActionsMenu({
@@ -29,6 +34,7 @@ export function RecordActionsMenu({
   rkey,
   record,
   cid,
+  sessionDid,
 }: RecordActionsMenuProps) {
   const [isDeleting, startDeleteRecord] = useTransition();
 
@@ -41,6 +47,20 @@ export function RecordActionsMenu({
     ]);
   }, [record]);
 
+  const onDelete = useCallback(() => {
+    startDeleteRecord(async () => {
+      try {
+        await deleteRecordAction(did, collection, rkey);
+      } catch (error) {
+        let message = "Failed to delete record";
+        if (error instanceof Error) {
+          message += ": " + error.message;
+        }
+        toast.error(message);
+      }
+    });
+  }, [did, collection, rkey]);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,24 +69,29 @@ export function RecordActionsMenu({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={onCopy}>Copy</DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link
-            href={recordDownloadUrl(pds, did, collection, rkey, cid)}
-            target="_blank"
-            referrerPolicy="no-referrer"
-          >
-            Download
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          disabled={isDeleting}
-          onClick={() => {
-            startDeleteRecord(() => deleteRecordAction(collection, rkey));
-          }}
-        >
-          <span className="text-destructive">Delete</span>
-        </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuItem onClick={onCopy}>Copy</DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              href={recordDownloadUrl(pds, did, collection, rkey, cid)}
+              target="_blank"
+              referrerPolicy="no-referrer"
+            >
+              Download
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        {sessionDid !== undefined && (
+          <DropdownMenuGroup>
+            <DropdownMenuItem
+              disabled={did === sessionDid || isDeleting}
+              onClick={onDelete}
+            >
+              <span className="text-destructive">Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

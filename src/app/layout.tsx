@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
@@ -10,6 +11,7 @@ import logo from "../../public/atproto-browser.svg";
 import ogCard from "../../public/og-card.png";
 import SessionState from "@/components/session-state";
 import { resolveSiteUrl, resolveSiteUrlScheme } from "@/lib/env";
+import { Toast } from "radix-ui";
 
 const url = `${resolveSiteUrlScheme()}${resolveSiteUrl()}`;
 
@@ -69,6 +71,7 @@ export default async function RootLayout({
             </div>
           </header>
           <div className="px-4 lg:px-16 grow">{children}</div>
+          <Toaster />
           <Footer className="px-4 lg:px-16" />
         </ThemeProvider>
       </body>
