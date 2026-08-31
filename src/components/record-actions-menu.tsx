@@ -7,7 +7,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -16,6 +15,17 @@ import { Button } from "@/components/ui/button";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { deleteRecordAction } from "@/actions/deleteRecord";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 export type RecordActionsMenuProps = {
   pds: string;
@@ -36,8 +46,6 @@ export function RecordActionsMenu({
   cid,
   sessionDid,
 }: RecordActionsMenuProps) {
-  const [isDeleting, startDeleteRecord] = useTransition();
-
   const onCopy = useCallback(async () => {
     const recordText = JSON.stringify(record, null, 2);
     await window.navigator.clipboard.write([
@@ -46,20 +54,6 @@ export function RecordActionsMenu({
       }),
     ]);
   }, [record]);
-
-  const onDelete = useCallback(() => {
-    startDeleteRecord(async () => {
-      try {
-        await deleteRecordAction(did, collection, rkey);
-      } catch (error) {
-        let message = "Failed to delete record";
-        if (error instanceof Error) {
-          message += ": " + error.message;
-        }
-        toast.error(message);
-      }
-    });
-  }, [did, collection, rkey]);
 
   return (
     <DropdownMenu>
@@ -85,15 +79,76 @@ export function RecordActionsMenu({
         {sessionDid !== undefined && (
           <DropdownMenuGroup>
             <DropdownMenuItem
-              disabled={did === sessionDid || isDeleting}
-              onClick={onDelete}
+              variant="destructive"
+              disabled={did !== sessionDid}
+              onSelect={(e) => e.preventDefault()}
             >
-              <span className="text-destructive">Delete</span>
+              <DeleteRecordDialog
+                did={did}
+                collection={collection}
+                rkey={rkey}
+              />
             </DropdownMenuItem>
           </DropdownMenuGroup>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+function DeleteRecordDialog({
+  did,
+  collection,
+  rkey,
+}: {
+  did: string;
+  collection: string;
+  rkey: string;
+}) {
+  const router = useRouter();
+  const [isDeleting, startDeleteRecord] = useTransition();
+
+  const onDelete = useCallback(() => {
+    startDeleteRecord(async () => {
+      try {
+        await deleteRecordAction(did, collection, rkey);
+        toast.success(`${rkey} deleted`);
+        router.push(`/at/${did}/${collection}`);
+      } catch (error) {
+        let message = "Failed to delete record";
+        if (error instanceof Error) {
+          message += ": " + error.message;
+        }
+        toast.error(message);
+      }
+    });
+  }, [did, collection, rkey, router]);
+
+  return (
+    <Dialog>
+      <DialogTrigger>Delete</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete record</DialogTitle>
+          <DialogDescription className="py-4">
+            Are you sure you want to delete {rkey} from this repository? This
+            action is irreversible.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="secondary">Cancel</Button>
+          </DialogClose>
+          <Button
+            variant="destructive"
+            onClick={onDelete}
+            disabled={isDeleting}
+          >
+            Delete
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 

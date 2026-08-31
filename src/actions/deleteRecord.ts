@@ -2,7 +2,6 @@
 
 import { getSession } from "@/lib/auth/session";
 import { Agent } from "@atproto/api";
-import { redirect } from "next/navigation";
 
 export async function deleteRecordAction(
   repo: string,
@@ -24,6 +23,4 @@ export async function deleteRecordAction(
     collection,
     rkey,
   });
-
-  redirect(`/at/${session.did}/${collection}`);
 }
