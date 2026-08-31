@@ -23,9 +23,9 @@ export default async function RecordViewer({
   const sessionDid = await getDid();
 
   return (
-    <div className="border border-dashed rounded-md p-4 max-w-fit bg-[#0d1117]">
+    <div className="border border-dashed rounded-md max-w-fit bg-[#0d1117]">
       <div className="relative">
-        <div className="absolute right-0 top-0">
+        <div className="absolute top-2 right-2">
           <RecordActionsMenu
             pds={pds}
             did={did}

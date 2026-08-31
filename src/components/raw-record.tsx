@@ -27,7 +27,7 @@ export default async function RawRecord({
 
   return (
     <div
-      className="font-mono text-sm"
+      className="p-4 font-mono text-sm overflow-x-auto [&_pre]:whitespace-pre"
       dangerouslySetInnerHTML={{ __html: highlightedHtml }}
     />
   );
