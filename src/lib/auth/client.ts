@@ -17,7 +17,7 @@ import {
 } from "@/lib/env";
 import { authDb } from "./database";
 
-export const SCOPE = "atproto";
+export const SCOPE = "atproto repo:*?action=delete";
 const SITE_URL = `${resolveSiteUrlScheme()}${resolveSiteUrl()}`;
 
 let client: NodeOAuthClient | null = null;

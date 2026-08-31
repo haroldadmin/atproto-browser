@@ -3,6 +3,7 @@ import { lexToJson } from "@atproto/lex-json";
 import { LoaderCircleIcon } from "lucide-react";
 import { Suspense } from "react";
 import { RecordActionsMenu } from "@/components/record-actions-menu";
+import { getDid } from "@/lib/auth/session";
 
 type RecordViewerProps = {
   pds: string;
@@ -12,13 +13,15 @@ type RecordViewerProps = {
   record: object;
 };
 
-export default function RecordViewer({
+export default async function RecordViewer({
   pds,
   did,
   collection,
   rkey,
   record,
 }: RecordViewerProps) {
+  const sessionDid = await getDid();
+
   return (
     <div className="border border-dashed rounded-md p-4 max-w-fit bg-[#0d1117]">
       <div className="relative">
@@ -29,6 +32,7 @@ export default function RecordViewer({
             collection={collection}
             rkey={rkey}
             record={lexToJson(record)}
+            sessionDid={sessionDid}
           />
         </div>
         <Suspense fallback={<LoaderCircleIcon className="animate-spin" />}>
