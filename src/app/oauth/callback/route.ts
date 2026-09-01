@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     res.cookies.set(SESSION_COOKIE_NAME, sessionId, {
       httpOnly: true,
       secure: true,
-      sameSite: "lax" as const,
+      sameSite: "lax",
       path: "/",
       maxAge: ONE_WEEK_SECS,
     });
