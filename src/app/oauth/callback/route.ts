@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getOAuthClient } from "@/lib/auth/client";
+import {
+  createCookieSession,
+  SESSION_COOKIE_NAME,
+} from "@/lib/auth/cookie-session";
 import { resolveSiteUrl, resolveSiteUrlScheme } from "@/lib/env";
 
 const SITE_URL = `${resolveSiteUrlScheme()}${resolveSiteUrl()}`;
@@ -11,17 +15,19 @@ export async function GET(request: NextRequest) {
 
     const client = await getOAuthClient();
     const { session } = await client.callback(params);
-    const response = NextResponse.redirect(new URL("/", SITE_URL));
 
-    response.cookies.set("did", session.did, {
+    const sessionId = await createCookieSession(session.did);
+
+    const res = NextResponse.redirect(new URL("/", SITE_URL));
+    res.cookies.set(SESSION_COOKIE_NAME, sessionId, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
-      maxAge: ONE_WEEK_SECS,
       path: "/",
+      maxAge: ONE_WEEK_SECS,
     });
 
-    return response;
+    return res;
   } catch (error) {
     console.error("OAuth callback error:", error);
     return NextResponse.redirect(new URL("/?error=login_failed", SITE_URL));
