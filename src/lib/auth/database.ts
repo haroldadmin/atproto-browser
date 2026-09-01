@@ -10,9 +10,15 @@ type KeyValueTable = {
   value: string;
 };
 
+type CookieTable = {
+  session_id: string;
+  did: string;
+};
+
 export type DatabaseSchema = {
   auth_state: KeyValueTable;
   auth_session: KeyValueTable;
+  auth_cookie: CookieTable;
 };
 
 export const authDb = once(() => {
@@ -52,6 +58,18 @@ export function getMigrator() {
           down: async (db: Kysely<unknown>) => {
             await db.schema.dropTable("auth_session").execute();
             await db.schema.dropTable("auth_state").execute();
+          },
+        },
+        "002": {
+          up: async (db: Kysely<unknown>) => {
+            await db.schema
+              .createTable("auth_cookie")
+              .addColumn("session_id", "text", (col) => col.primaryKey())
+              .addColumn("did", "text", (col) => col.notNull())
+              .execute();
+          },
+          down: async (db: Kysely<unknown>) => {
+            await db.schema.dropTable("auth_cookie").execute();
           },
         },
       }),
