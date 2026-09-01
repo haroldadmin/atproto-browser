@@ -53,6 +53,7 @@ export function RecordActionsMenu({
         "text/plain": recordText,
       }),
     ]);
+    toast.success("Record copied to the clipboard");
   }, [record]);
 
   return (
