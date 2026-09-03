@@ -1,9 +1,10 @@
 import { connect } from "@tursodatabase/serverless";
-import { Kysely } from "kysely";
+import { Kysely, SqliteDialect } from "kysely";
 import { Migrator } from "kysely/migration";
 import { TursoServerlessDialect } from "kysely-turso/serverless";
-import { envOrThrow } from "@/lib/env";
+import { envOrThrow, resolveVercelEnv } from "@/lib/env";
 import { once } from "lodash";
+import Database from "better-sqlite3";
 
 type KeyValueTable = {
   key: string;
@@ -22,6 +23,15 @@ export type DatabaseSchema = {
 };
 
 export const authDb = once(() => {
+  const env = resolveVercelEnv();
+  if (!env || env === "development") {
+    return new Kysely<DatabaseSchema>({
+      dialect: new SqliteDialect({
+        database: new Database("auth.db"),
+      }),
+    });
+  }
+
   const database = new Kysely<DatabaseSchema>({
     dialect: new TursoServerlessDialect({
       connection: connect({
