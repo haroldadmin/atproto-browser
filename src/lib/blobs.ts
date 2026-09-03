@@ -1,5 +1,5 @@
 import { Agent } from "@atproto/api";
-import assert from "node:assert";
+import assert from "assert";
 
 export async function* generateBlobs(
   did: string,
