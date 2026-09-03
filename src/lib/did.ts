@@ -40,24 +40,3 @@ export async function resolveDidDoc(
 }
 
 export const cachedResolveDidDoc = cache(resolveDidDoc);
-
-type DidParts = {
-  prefix: string;
-  method: string;
-  id: string;
-};
-
-function resolveToParts(did: string): DidParts | undefined {
-  const parts = did.split(":");
-  if (parts.length !== 3) {
-    return undefined;
-  }
-
-  const [prefix, method, id] = parts;
-
-  return {
-    prefix,
-    method,
-    id,
-  };
-}
