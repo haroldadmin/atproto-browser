@@ -1,10 +1,10 @@
-import { describe, vi, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   AtUriTransformer,
   BlobLinkTransformer,
   DidTransformer,
 } from "./transformers";
-import { codeToHast, codeToHtml } from "shiki";
+import { codeToHtml } from "shiki";
 import { AtUri } from "@atproto/syntax";
 import { CID } from "multiformats";
 import { createBlobURL } from "../uris";

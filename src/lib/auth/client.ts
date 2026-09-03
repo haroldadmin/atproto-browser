@@ -21,36 +21,28 @@ export const SCOPE = "atproto repo:*?action=delete";
 let client: NodeOAuthClient | null = null;
 
 export function buildClientMetadata(): OAuthClientMetadataInput {
-  const vercelEnv = resolveVercelEnv();
-  const siteUrl = resolveSiteUrl();
+  const siteUrl = new URL(resolveSiteUrl());
+  const redirectUrl = new URL("/oauth/callback", siteUrl);
 
-  if (!vercelEnv || vercelEnv == "development") {
+  if (siteUrl.hostname === "127.0.0.1") {
     return buildAtprotoLoopbackClientMetadata({
       scope: SCOPE,
-      redirect_uris: ["http://127.0.0.1:3000/oauth/callback"],
+      redirect_uris: [redirectUrl.toString()],
     });
   }
 
   return {
-    client_id: new URL(
-      "oauth-client-metadata.json",
-      `https://${siteUrl}`,
-    ).toString(),
+    client_id: new URL("oauth-client-metadata.json", siteUrl).toString(),
     client_name: "atproto-browser.dev",
-    client_uri: siteUrl,
-    redirect_uris: [
-      new URL("/oauth/callback", `https://${siteUrl}`).toString(),
-    ],
-    logo_uri: `${siteUrl}/favicon.ico`,
+    client_uri: siteUrl.toString(),
+    redirect_uris: [redirectUrl.toString()],
+    logo_uri: new URL("/favicon.ico", siteUrl).toString(),
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],
     scope: SCOPE,
     token_endpoint_auth_method: "private_key_jwt",
     token_endpoint_auth_signing_alg: "ES256",
-    jwks_uri: new URL(
-      "/.well-known/jwks.json",
-      `https://${siteUrl}`,
-    ).toString(),
+    jwks_uri: new URL("/.well-known/jwks.json", siteUrl).toString(),
     dpop_bound_access_tokens: true,
   };
 }

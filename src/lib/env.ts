@@ -34,7 +34,8 @@ export function resolveVercelEnv(): VercelEnv | undefined {
 export function resolveSiteUrl(): string {
   const vercel = env("VERCEL");
   if (!vercel) {
-    return `http://127.0.0.1:3000`;
+    const port = env("PORT") ?? "3000";
+    return `http://127.0.0.1:${port}`;
   }
 
   const vercelEnv = envOrThrow("VERCEL_ENV");
@@ -45,8 +46,10 @@ export function resolveSiteUrl(): string {
       const url = envOrThrow("VERCEL_URL");
       return `https://${url}`;
     case "development":
-    default:
-      return `http://127.0.0.1:3000`;
+    default: {
+      const port = env("PORT") ?? "3000";
+      return `http://127.0.0.1:${port}`;
+    }
   }
 }
 
