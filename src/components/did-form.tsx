@@ -24,6 +24,7 @@ export default function DIDForm() {
           <Input
             className={clsx(formState.error && "border-red-500")}
             type="text"
+            id="did"
             name="did"
             defaultValue={formState.did}
             placeholder="did:plc, did:web, or Bluesky handle"
