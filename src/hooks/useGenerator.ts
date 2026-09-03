@@ -13,7 +13,7 @@ export function useGenerator<T>(createGenerator: () => AsyncGenerator<T>) {
       setLoading(true);
       const next = await ref.current.next();
       if (next.value) {
-        setItems(concat(items, next.value));
+        setItems((prev) => concat(prev, next.value));
       }
 
       setHasMore(!next.done);
@@ -22,7 +22,7 @@ export function useGenerator<T>(createGenerator: () => AsyncGenerator<T>) {
     } finally {
       setLoading(false);
     }
-  }, [items]);
+  }, []);
 
   return { generate, items, hasMore, loading };
 }
