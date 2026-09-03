@@ -4,8 +4,11 @@ import { CID } from "multiformats/cid";
 
 export function atUriToBrowserUri(uri: AtUri): string {
   const { host, collection, rkey } = uri;
-  const segments = join([host, collection, rkey], "/");
-  return `/at/${segments}`;
+  const segments = [host, collection, rkey].filter(
+    (s) => s.trim().length !== 0,
+  );
+  const path = join(segments, "/");
+  return `/at/${path}`;
 }
 
 export function createBlobURL(cid: CID, did: string, pds: string): URL {

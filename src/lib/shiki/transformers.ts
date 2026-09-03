@@ -5,6 +5,7 @@ import { atUriToBrowserUri, createBlobURL } from "../uris";
 import { visit } from "unist-util-visit";
 import { isObject } from "lodash";
 import { AtUri } from "@atproto/api";
+import { isValidDid } from "@atproto/syntax";
 
 /**
  * A Shiki transform to make AT URIs clickable in syntax
@@ -42,16 +43,6 @@ export const AtUriTransformer: ShikiTransformer = {
 };
 
 /**
- * DID rules:
- * - Must start with "did:"
- * - Must have a method name
- * - Must have an identifier
- * - Must not end with ":"
- * @see https://www.w3.org/TR/did-core/#did-syntax
- */
-const DID_REGEX = /^did:[a-z]+:[a-zA-Z0-9._:%-]*[a-zA-Z0-9._%-]$/;
-
-/**
  * A Shiki transformer to make DIDs clickable in syntax
  * highlighted code.
  */
@@ -67,12 +58,12 @@ export const DidTransformer: ShikiTransformer = {
         return;
       }
 
-      const isDid = DID_REGEX.test(unquote(element.value));
-      if (!isDid) {
+      const identifier = unquote(element.value);
+      if (!isValidDid(identifier)) {
         return;
       }
 
-      const didUri = `/at/${unquote(element.value)}`;
+      const didUri = `/at/${identifier}`;
 
       parent.children = [
         h(
@@ -128,13 +119,20 @@ export const BlobLinkTransformer: (
           return;
         }
 
+        let parsedCid: CID;
+        try {
+          parsedCid = CID.parse(value);
+        } catch {
+          return;
+        }
+
         parent.children = [
           h(
             "a",
             {
               class: "underline underline-offset-4",
               target: "_blank",
-              href: createBlobURL(CID.parse(value), did, pds).toString(),
+              href: createBlobURL(parsedCid, did, pds).toString(),
             },
             [element],
           ),
