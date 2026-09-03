@@ -11,7 +11,6 @@ import logo from "../../public/atproto-browser.svg";
 import ogCard from "../../public/og-card.png";
 import SessionState from "@/components/session-state";
 import { resolveSiteUrl, resolveSiteUrlScheme } from "@/lib/env";
-import { Toast } from "radix-ui";
 
 const url = `${resolveSiteUrlScheme()}${resolveSiteUrl()}`;
 
