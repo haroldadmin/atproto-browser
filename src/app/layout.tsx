@@ -10,9 +10,9 @@ import Script from "next/script";
 import logo from "../../public/atproto-browser.svg";
 import ogCard from "../../public/og-card.png";
 import SessionState from "@/components/session-state";
-import { resolveSiteUrl, resolveSiteUrlScheme } from "@/lib/env";
+import { resolveSiteUrl } from "@/lib/env";
 
-const url = `${resolveSiteUrlScheme()}${resolveSiteUrl()}`;
+const SITE_URL = resolveSiteUrl();
 
 export const metadata: Metadata = {
   title: {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description: "Experimental browser for the Atmosphere",
     siteName: "ATProto Browser",
     images: [ogCard.src],
-    url,
+    url: SITE_URL,
   },
   twitter: {
     title: "ATProto Browser",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   alternates: {
-    canonical: url,
+    canonical: SITE_URL,
   },
 };
 

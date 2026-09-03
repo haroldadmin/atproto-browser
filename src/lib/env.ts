@@ -31,30 +31,22 @@ export function resolveVercelEnv(): VercelEnv | undefined {
   return vercelEnv;
 }
 
-export function resolveSiteUrlScheme(): "http://" | "https://" {
-  const vercelEnv = resolveVercelEnv();
-  if (!vercelEnv || vercelEnv == "development") {
-    return "http://";
-  }
-
-  return "https://";
-}
-
 export function resolveSiteUrl(): string {
   const vercel = env("VERCEL");
   if (!vercel) {
-    return "127.0.0.1:3000";
+    return `http://127.0.0.1:3000`;
   }
 
   const vercelEnv = envOrThrow("VERCEL_ENV");
   switch (vercelEnv) {
     case "production":
-      return "www.atproto-browser.dev";
+      return `https://www.atproto-browser.dev`;
     case "preview":
-      return envOrThrow("VERCEL_URL");
+      const url = envOrThrow("VERCEL_URL");
+      return `https://${url}`;
     case "development":
     default:
-      return "127.0.0.1:3000";
+      return `http://127.0.0.1:3000`;
   }
 }
 

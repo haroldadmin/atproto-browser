@@ -4,9 +4,9 @@ import {
   createCookieSession,
   SESSION_COOKIE_NAME,
 } from "@/lib/auth/cookie-session";
-import { resolveSiteUrl, resolveSiteUrlScheme } from "@/lib/env";
+import { resolveSiteUrl } from "@/lib/env";
 
-const SITE_URL = `${resolveSiteUrlScheme()}${resolveSiteUrl()}`;
+const SITE_URL = resolveSiteUrl();
 const ONE_WEEK_SECS = 7 * 24 * 60 * 60;
 
 export async function GET(request: NextRequest) {

@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/at/",
     },
-    sitemap: new URL("/sitemap.xml", `https://${resolveSiteUrl()}`).toString(),
+    sitemap: new URL("/sitemap.xml", resolveSiteUrl()).toString(),
   };
 }
