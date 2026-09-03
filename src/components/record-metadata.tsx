@@ -27,6 +27,12 @@ export default function RecordMetadata({
   record,
 }: RecordMetadataProps) {
   const { $type } = record as Record<string, unknown>;
+  let stringifiedType: string;
+  if (typeof $type === "string" && $type.length > 0) {
+    stringifiedType = $type;
+  } else {
+    stringifiedType = "unknown";
+  }
 
   return (
     <div>
@@ -44,7 +50,7 @@ export default function RecordMetadata({
               <span className="font-mono text-muted-foreground">$type</span>
             </TableCell>
             <TableCell>
-              <span className="font-mono">{String($type) ?? "unknown"}</span>
+              <span className="font-mono">{stringifiedType}</span>
             </TableCell>
           </TableRow>
           <TableRow>
