@@ -1,10 +1,13 @@
 import { Agent } from "@atproto/api";
+import assert from "node:assert";
 
 export async function* generateBlobs(
   did: string,
   pds: string,
   limit = Number.POSITIVE_INFINITY,
 ) {
+  assert(limit > 0, "limit must be positive");
+
   const agent = new Agent(pds);
   const pageSize = Math.min(50, limit);
 
@@ -25,9 +28,14 @@ export async function* generateBlobs(
       break;
     }
 
-    cursor = data.cursor;
+    const remainingLimit = Math.max(0, limit - emitted);
+    yield* data.cids.slice(0, remainingLimit);
 
+    if (!data.cursor) {
+      break;
+    }
+
+    cursor = data.cursor;
     emitted += data.cids.length;
-    yield* data.cids;
   }
 }
