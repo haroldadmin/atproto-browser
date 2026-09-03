@@ -17,7 +17,7 @@ export function BskyAvatar({
   }
 
   const url = new URL(
-    `/img/avatar/plain/${decodeURIComponent(did)}/${avatarCID}@jpeg`,
+    `/img/avatar/plain/${did}/${avatarCID}@jpeg`,
     "https://cdn.bsky.app",
   );
 

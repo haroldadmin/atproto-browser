@@ -20,7 +20,8 @@ export default async function RecordPage({
 }: {
   params: Promise<{ did: string; collection: string; rkey: string }>;
 }) {
-  const { did, collection, rkey } = await params;
+  const { did: uriEncodedDid, collection, rkey } = await params;
+  const did = decodeURIComponent(uriEncodedDid);
 
   const doc = await cachedResolveDidDoc(decodeURIComponent(did));
   if (!doc) {
