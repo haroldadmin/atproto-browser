@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { NextRequest, NextResponse } from "next/server";
 import { getOAuthClient, SCOPE } from "@/lib/auth/client";
 import { isValidDid, isValidHandle } from "@atproto/syntax";
 
@@ -12,12 +11,12 @@ const RequestBodySchema = z.object({
     }, "Must be a valid DID or handle"),
 });
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
     const validationResult = RequestBodySchema.safeParse(body);
     if (!validationResult.success) {
-      return NextResponse.json(
+      return Response.json(
         { message: validationResult.error.message },
         { status: 400 },
       );
@@ -30,12 +29,12 @@ export async function POST(request: NextRequest) {
       scope: SCOPE,
     });
 
-    return NextResponse.json({
+    return Response.json({
       redirectUrl: authorizationServerUrl.toString(),
     });
   } catch (error) {
     console.error("OAuth login error:", error);
-    return NextResponse.json(
+    return Response.json(
       { error: "Failed to trigger OAuth flow" },
       { status: 500 },
     );

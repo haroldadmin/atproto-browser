@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import {
   deleteSession,
   resolveSessionDid,
@@ -11,12 +10,12 @@ export async function POST() {
   const sessionCookies = await cookies();
   const sessionId = sessionCookies.get(SESSION_COOKIE_NAME);
   if (!sessionId) {
-    return NextResponse.json({ success: true });
+    return Response.json({ success: true });
   }
 
   const did = await resolveSessionDid(sessionId.value);
   if (!did) {
-    return NextResponse.json({ success: true });
+    return Response.json({ success: true });
   }
 
   try {
@@ -32,5 +31,5 @@ export async function POST() {
     console.error("Failed to delete session", error);
   }
 
-  return NextResponse.json({ success: true });
+  return Response.json({ success: true });
 }
