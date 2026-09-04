@@ -1,5 +1,6 @@
 import { DidDocument, IdResolver, MemoryCache } from "@atproto/identity";
 import { isValidDid } from "@atproto/syntax";
+import { cacheLife, cacheTag } from "next/cache";
 import { cache } from "react";
 
 const oneHourMillis = 1 * 60 * 60 * 1000;
@@ -22,6 +23,10 @@ const resolver = new IdResolver({
 export async function resolveDidDoc(
   str: string,
 ): Promise<DidDocument | undefined> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("did", str);
+
   const resolvedDid = !isValidDid(str)
     ? await resolver.handle.resolve(str)
     : str;
