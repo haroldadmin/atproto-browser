@@ -1,5 +1,5 @@
 import { merge, noop } from "lodash";
-import React, { createContext, useCallback, useState } from "react";
+import React, { createContext, useCallback, useMemo, useState } from "react";
 import { hosts } from "./useJetstream";
 
 type FeedSettings = {
@@ -43,6 +43,10 @@ const defaultContext: FeedCtx = {
 export const FeedContext = createContext<FeedCtx>(defaultContext);
 
 export default function FeedProvider({ children }: React.PropsWithChildren) {
+  const [contextValue, setContextValue] = useState<FeedCtx>({
+    ...defaultContext,
+  });
+
   const setSamplingRate = useCallback((samplingRate: number) => {
     setContextValue((ctx) => merge({}, ctx, { settings: { samplingRate } }));
   }, []);
@@ -67,17 +71,26 @@ export default function FeedProvider({ children }: React.PropsWithChildren) {
     setContextValue((ctx) => merge({}, ctx, { settings: { filterQuery } }));
   }, []);
 
-  const [contextValue, setContextValue] = useState<FeedCtx>({
-    ...defaultContext,
-    setSamplingRate,
-    setBufferSize,
-    setCollections,
-    setActive,
-    setHost,
-    setFilterQuery,
-  });
-
-  return (
-    <FeedContext.Provider value={contextValue}>{children}</FeedContext.Provider>
+  const value = useMemo(
+    () => ({
+      ...contextValue,
+      setSamplingRate,
+      setBufferSize,
+      setCollections,
+      setActive,
+      setHost,
+      setFilterQuery,
+    }),
+    [
+      contextValue,
+      setSamplingRate,
+      setBufferSize,
+      setCollections,
+      setActive,
+      setHost,
+      setFilterQuery,
+    ],
   );
+
+  return <FeedContext.Provider value={value}>{children}</FeedContext.Provider>;
 }
