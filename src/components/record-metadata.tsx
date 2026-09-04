@@ -75,7 +75,9 @@ export default function RecordMetadata({
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Blobs</TableCell>
+            <TableCell>
+              <span className="font-mono text-muted-foreground">blobs</span>
+            </TableCell>
             <TableCell>
               <BlobsCell did={did} pds={pds} record={record} />
             </TableCell>
