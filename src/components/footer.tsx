@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
+import Navigation from "@/components/navigation";
 import { twMerge } from "tailwind-merge";
-import Navigation from "./navigation";
 
 export default function Footer({ className }: { className?: string }) {
   return (

@@ -11,6 +11,8 @@ import logo from "../../public/atproto-browser.svg";
 import ogCard from "../../public/og-card.png";
 import SessionState from "@/components/session-state";
 import { resolveSiteUrl } from "@/lib/env";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const SITE_URL = resolveSiteUrl();
 
@@ -40,7 +42,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -66,7 +68,11 @@ export default async function RootLayout({
           <header className="px-4 py-8 lg:px-16">
             <div className="flex flex-row justify-between">
               <Title />
-              <SessionState />
+              <Suspense
+                fallback={<Skeleton className="border rounded-md h-9 w-21" />}
+              >
+                <SessionState />
+              </Suspense>
             </div>
           </header>
           <div className="px-4 lg:px-16 grow">{children}</div>

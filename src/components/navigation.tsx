@@ -1,14 +1,10 @@
-"use client";
-
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import clsx from "clsx";
 import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 export default function Navigation() {
   return (
@@ -44,18 +40,11 @@ function NavigationLink({
   href,
   children,
 }: React.PropsWithChildren<{ href: string }>) {
-  const pathname = usePathname();
   const isExternal = href.startsWith("http");
 
   return (
     <Link href={href} target={isExternal ? "_blank" : undefined}>
-      <p
-        className={clsx(
-          "text-sm text-gray-600 dark:text-gray-400 hover:underline flex flex-row items-center gap-1",
-          pathname === href &&
-            "text-gray-900 dark:text-gray-50 pointer-events-none font-bold",
-        )}
-      >
+      <p className="text-sm text-gray-600 dark:text-gray-400 hover:underline flex flex-row items-center gap-1">
         {children}
         {isExternal && <ExternalLinkIcon className="w-4 h-4" />}
       </p>

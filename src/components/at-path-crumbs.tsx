@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -7,63 +5,56 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { zip } from "lodash";
-import { usePathname } from "next/navigation";
-import { Fragment, useMemo } from "react";
+import { AtUri } from "@atproto/syntax";
+import { Fragment, ReactNode, useMemo } from "react";
 
-function getPathComponents(pathname: string): string[] {
-  return pathname.split("/").filter((component) => component.length > 0);
-}
+export type ATPathCrumbsProps = {
+  aturi: string;
+};
 
-/**
- * Takes a pathname  and converts it into a list of pathnames
- * that progressively include more components.
- *
- * @example Input: "/at/did-foo/collection-bar/record-baz"
- * Output: ["/at/", "/at/did-foo", "/at/did-foo/collection-bar", "/at/did-foo/collection-bar/record-baz"]
- */
-function createProgressivePaths(pathname: string): string[] {
-  const components = getPathComponents(pathname);
-  const recursiveLinks: string[] = [];
-  for (let i = 0; i <= components.length; i++) {
-    const recursiveLink: string[] = [];
+export default function ATPathCrumbs({ aturi }: ATPathCrumbsProps) {
+  const crumbs = useMemo(() => {
+    const { did, collection, rkey } = AtUri.make(aturi);
+    const steps: ReactNode[] = [];
 
-    for (let j = 0; j <= i; j++) {
-      const component = components[j];
-      recursiveLink.push(`/${component}`);
+    if (did) {
+      const url = `/at/${did}`;
+      steps.push(
+        <BreadcrumbItem key={url}>
+          <BreadcrumbLink href={url}>{did}</BreadcrumbLink>
+        </BreadcrumbItem>,
+      );
     }
 
-    recursiveLinks.push(recursiveLink.join(""));
-  }
+    if (collection) {
+      const url = `/at/${did}/${collection}`;
+      steps.push(
+        <Fragment key={url}>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem key={collection}>
+            <BreadcrumbLink href={url}>{collection}</BreadcrumbLink>
+          </BreadcrumbItem>
+        </Fragment>,
+      );
+    }
 
-  return recursiveLinks;
-}
+    if (rkey) {
+      const url = `/at/${did}/${collection}/${rkey}`;
+      steps.push(
+        <Fragment key={url}>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href={url}>{rkey}</BreadcrumbLink>
+          </BreadcrumbItem>
+        </Fragment>,
+      );
+    }
 
-export default function ATPathCrumbs() {
-  const pathname = usePathname();
-
-  const crumbs = useMemo(() => {
-    const components = getPathComponents(pathname);
-    const recursiveLinks = createProgressivePaths(pathname);
-
-    return zip(components, recursiveLinks)
-      .map(([name, link], index, array) => {
-        return (
-          <Fragment key={name}>
-            <BreadcrumbItem>
-              <BreadcrumbLink href={link}>
-                {decodeURIComponent(name as string)}
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            {index !== array.length - 2 && <BreadcrumbSeparator />}
-          </Fragment>
-        );
-      })
-      .slice(1, -1);
-  }, [pathname]);
+    return steps;
+  }, [aturi]);
 
   return (
-    <Breadcrumb className="my-4">
+    <Breadcrumb className="mb-4">
       <BreadcrumbList>{crumbs}</BreadcrumbList>
     </Breadcrumb>
   );

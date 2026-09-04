@@ -1,5 +1,6 @@
-import { Agent, AppBskyActorProfile } from "@atproto/api";
+import { Agent, AppBskyActorProfile, jsonToLex, lexToJson } from "@atproto/api";
 import { cache } from "react";
+import { cacheLife, cacheTag } from "next/cache";
 
 type FetchCollectionsParams = {
   did: string;
@@ -7,6 +8,10 @@ type FetchCollectionsParams = {
 };
 
 async function fetchCollections({ did, pds }: FetchCollectionsParams) {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("collections", did);
+
   try {
     const agent = new Agent(pds);
     const { data } = await agent.com.atproto.repo.describeRepo({
@@ -30,6 +35,10 @@ type FetchRecordParams = {
 };
 
 async function fetchRecord({ did, collection, rkey, pds }: FetchRecordParams) {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("record", did, `${did}/${collection}/${rkey}`);
+
   try {
     const agent = new Agent(pds);
     const { data } = await agent.com.atproto.repo.getRecord({
@@ -38,72 +47,65 @@ async function fetchRecord({ did, collection, rkey, pds }: FetchRecordParams) {
       rkey,
     });
 
-    return data;
+    return {
+      uri: data.uri,
+      cid: data.cid,
+      value: lexToJson(data.value),
+    };
   } catch (error) {
     console.error(error);
     return undefined;
   }
 }
 
-export const cachedFetchRecord = cache(fetchRecord);
+export const cachedFetchRecord = cache(async (params: FetchRecordParams) => {
+  const record = await fetchRecord(params);
+  if (!record) {
+    return undefined;
+  }
 
-async function fetchProfile(did: string, pds: string) {
-  const agent = new Agent(pds);
-  const { data } = await agent.com.atproto.repo.getRecord({
-    repo: did,
-    collection: "app.bsky.actor.profile",
-    rkey: "self",
-  });
+  return {
+    uri: record.uri,
+    cid: record.cid,
+    value: jsonToLex(record.value),
+  };
+});
 
-  if (!AppBskyActorProfile.isRecord(data.value)) {
+async function fetchProfileRecord(did: string, pds: string) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("profile", did);
+
+  try {
+    const agent = new Agent(pds);
+    const { data } = await agent.com.atproto.repo.getRecord({
+      repo: did,
+      collection: "app.bsky.actor.profile",
+      rkey: "self",
+    });
+
+    return lexToJson(data.value);
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+}
+
+export const cachedFetchProfile = cache(async (did: string, pds: string) => {
+  const value = await fetchProfileRecord(did, pds);
+  if (!value) {
+    throw new Error(`Could not fetch profile record for ${did}`);
+  }
+
+  const lex = jsonToLex(value);
+  if (!AppBskyActorProfile.isRecord(lex)) {
     throw new Error(`Invalid profile record for ${did}`);
   }
 
-  const validationResult = AppBskyActorProfile.validateRecord(data.value);
+  const validationResult = AppBskyActorProfile.validateRecord(lex);
   if (!validationResult.success) {
     throw new Error(`Malformed profile record for ${did}`);
   }
 
   return validationResult.value;
-}
-
-export const cachedFetchProfile = cache(fetchProfile);
-
-export async function* generateRecords(
-  did: string,
-  collection: string,
-  pds: string,
-  limit = Number.POSITIVE_INFINITY,
-) {
-  const agent = new Agent(pds);
-  const pageSize = Math.min(50, limit);
-
-  let emitted = 0;
-  let cursor: string | undefined;
-
-  while (emitted < limit) {
-    const { data, success } = await agent.com.atproto.repo.listRecords({
-      collection,
-      repo: did,
-      cursor,
-      limit: pageSize,
-    });
-
-    if (!success) {
-      throw new Error(`Failed to list records for ${did} after ${cursor}`);
-    }
-
-    if (!data.records.length) {
-      break;
-    }
-
-    yield* data.records;
-
-    if (!data.cursor) {
-      break;
-    }
-
-    cursor = data.cursor;
-    emitted += data.records.length;
-  }
-}
+});

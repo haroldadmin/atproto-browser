@@ -7,8 +7,22 @@ import { notFound } from "next/navigation";
 import ExportButton from "@/components/export-button";
 import { getPds } from "@atproto/identity";
 import BlobsList from "@/components/blobs-list";
+import { Suspense } from "react";
+import { LoaderCircleIcon } from "lucide-react";
 
 export default async function CollectionsPage({
+  params,
+}: {
+  params: Promise<{ did: string }>;
+}) {
+  return (
+    <Suspense fallback={<LoaderCircleIcon className="animate-spin" />}>
+      <CollectionsPageContent params={params} />
+    </Suspense>
+  );
+}
+
+async function CollectionsPageContent({
   params,
 }: {
   params: Promise<{ did: string }>;

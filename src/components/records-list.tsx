@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import LinkSpan from "./link-span";
 import { useGenerator } from "@/hooks/useGenerator";
-import { generateRecords } from "@/lib/records";
+import { generateRecords } from "@/lib/records-generator";
 
 type RecordsListProps = {
   did: string;

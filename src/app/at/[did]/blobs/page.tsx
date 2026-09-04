@@ -3,6 +3,10 @@ import { cachedResolveDidDoc } from "@/lib/did";
 import { getPds } from "@atproto/identity";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import ATPathCrumbs from "@/components/at-path-crumbs";
+import { AtUri } from "@atproto/syntax";
+import ListSkeleton from "@/components/list-skeleton";
 
 export type BlobsPageParams = {
   did: string;
@@ -19,7 +23,19 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlobsPage({
+export default function BlobsPage({
+  params,
+}: {
+  params: Promise<BlobsPageParams>;
+}) {
+  return (
+    <Suspense fallback={<ListSkeleton rows={5} />}>
+      <BlobsPageContent params={params} />
+    </Suspense>
+  );
+}
+
+async function BlobsPageContent({
   params,
 }: {
   params: Promise<BlobsPageParams>;
@@ -38,6 +54,7 @@ export default async function BlobsPage({
 
   return (
     <div>
+      <ATPathCrumbs aturi={AtUri.make(doc.id).toString()} />
       <BlobsList did={doc.id} pds={pds} />
     </div>
   );
