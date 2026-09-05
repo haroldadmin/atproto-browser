@@ -10,19 +10,19 @@ import BlobsList from "@/components/blobs-list";
 import { Suspense } from "react";
 import { LoaderCircleIcon } from "lucide-react";
 
-export default async function CollectionsPage({
+export default async function RepositoryPage({
   params,
 }: {
   params: Promise<{ did: string }>;
 }) {
   return (
     <Suspense fallback={<LoaderCircleIcon className="animate-spin" />}>
-      <CollectionsPageContent params={params} />
+      <RepositoryPageContent params={params} />
     </Suspense>
   );
 }
 
-async function CollectionsPageContent({
+async function RepositoryPageContent({
   params,
 }: {
   params: Promise<{ did: string }>;
