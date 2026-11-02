@@ -1,0 +1,29 @@
+# Deploys `main` to production on Vercel.
+
+when:
+  - event: ["push"]
+    branch: ["main"]
+
+engine: microvm
+image: nixos
+
+dependencies:
+  - nodejs_24
+  - corepack_24
+
+environment:
+  COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+  YARN_ENABLE_GLOBAL_CACHE: "false"
+
+cache:
+  - key: yarn
+    hash: [yarn.lock]
+    fallback: true
+    paths: [.yarn/cache]
+
+steps:
+  - name: "Install dependencies"
+    command: "yarn install --immutable"
+
+  - name: "Deploy to production"
+    command: 'yarn vercel deploy --prod --yes --token "$VERCEL_TOKEN"'

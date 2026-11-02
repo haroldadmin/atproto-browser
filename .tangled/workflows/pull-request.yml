@@ -1,0 +1,43 @@
+# Checks pull requests into `main` and deploys a Vercel preview.
+when:
+  - event: ["pull_request"]
+    branch: ["main"]
+
+engine: microvm
+image: nixos
+
+dependencies:
+  - nodejs_24
+  - corepack_24
+
+environment:
+  COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+  YARN_ENABLE_GLOBAL_CACHE: "false"
+
+cache:
+  - key: yarn
+    hash: [yarn.lock]
+    fallback: true
+    paths: [.yarn/cache]
+
+steps:
+  - name: "Install dependencies"
+    command: "yarn install --immutable"
+
+  - name: "Check formatting"
+    command: "yarn format:check"
+
+  - name: "Lint"
+    command: "yarn lint"
+
+  - name: "Test"
+    command: "yarn test"
+
+  - name: "Deploy preview"
+    command: |
+      set -euo pipefail
+      if [ -z "${VERCEL_TOKEN:-}" ] || [ -z "${VERCEL_ORG_ID:-}" ] || [ -z "${VERCEL_PROJECT_ID:-}" ]; then
+        echo "Vercel secrets are not available to this run (untrusted pull request); skipping preview deployment."
+        exit 0
+      fi
+      yarn vercel deploy --yes --token "$VERCEL_TOKEN"
