@@ -9,6 +9,9 @@ image: nixos
 dependencies:
   - nodejs_24
   - corepack_24
+  - python3
+  - gcc
+  - gnumake
 
 environment:
   COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"

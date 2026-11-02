@@ -23,7 +23,7 @@ cache:
 
 steps:
   - name: "Install dependencies"
-    command: "yarn install --immutable"
+    command: "yarn install --immutable --mode=skip-build"
 
   - name: "Deploy to production"
     command: 'yarn vercel deploy --prod --yes --token "$VERCEL_TOKEN"'
