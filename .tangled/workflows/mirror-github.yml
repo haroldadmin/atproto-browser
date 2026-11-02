@@ -1,0 +1,34 @@
+# Mirrors `main` to the read-only GitHub repository.
+
+when:
+  - event: ["push"]
+    branch: ["main"]
+
+engine: microvm
+image: nixos
+
+dependencies:
+  - git
+  - openssh
+
+steps:
+  - name: "Mirror to GitHub"
+    command: |
+      set -euo pipefail
+      if [ -z "${GITHUB_MIRROR_KEY:-}" ]; then
+        echo "GITHUB_MIRROR_KEY is not set; cannot mirror to GitHub."
+        exit 1
+      fi
+
+      mkdir -p ~/.ssh
+      chmod 700 ~/.ssh
+      printf '%s\n' "$GITHUB_MIRROR_KEY" > ~/.ssh/id_ed25519
+      chmod 600 ~/.ssh/id_ed25519
+      ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
+
+      # GitHub rejects pushes from shallow clones, so fetch full history first.
+      if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+        git fetch --unshallow origin
+      fi
+
+      git push --force git@github.com:haroldadmin/atproto-browser.git HEAD:refs/heads/main
