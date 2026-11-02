@@ -1,4 +1,7 @@
 # Mirrors `main` to the read-only GitHub repository.
+#
+# Requires the `GITHUB_MIRROR_KEY` secret: the private half of an SSH key whose
+# public half is added as a deploy key (with write access) on GitHub.
 
 when:
   - event: ["push"]
