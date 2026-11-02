@@ -22,7 +22,7 @@ Follow [@atproto-browser.dev](https://bsky.app/profile/atproto-browser.dev) on B
 1. Clone the repository
 
 ```bash
-git clone https://github.com/haroldadmin/atproto-browser.git
+git clone https://tangled.org/haroldadmin.com/atproto-browser
 ```
 
 2. Install dependencies

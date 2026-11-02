@@ -29,7 +29,7 @@ export default function About() {
         <p>
           If you like this project, please consider{" "}
           <Link
-            href="https://github.com/haroldadmin/atproto-browser"
+            href="https://tangled.org/haroldadmin.com/atproto-browser"
             target="_blank"
             referrerPolicy="no-referrer"
           >

@@ -17,7 +17,7 @@ export default function Navigation() {
           <NavigationLink href="/about">About</NavigationLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationLink href="https://github.com/haroldadmin/atproto-browser">
+          <NavigationLink href="https://tangled.org/haroldadmin.com/atproto-browser">
             Source code
           </NavigationLink>
         </NavigationMenuItem>
